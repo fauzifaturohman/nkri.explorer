@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NKRI Explorer — Belajar Wilayah Negara Kesatuan Republik Indonesia</title>
+<meta name="description" content="Website pembelajaran interaktif tentang wilayah NKRI lengkap dengan materi 5000 kata, peta, glosarium, flashcard, dan kuis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1020;--bg-soft:#121a35;--card:rgba(255,255,255,0.06);--card-solid:#151d3b;
+  --text:#eaf0ff;--muted:#9aa8c7;
+  --primary:#ff4d4d;--primary-2:#ff8a3d;--accent:#22d3ee;--accent-2:#a78bfa;
+  --green:#34d399;--yellow:#fbbf24;--border:rgba(255,255,255,0.12);
+  --shadow:0 20px 50px -20px rgba(0,0,0,.7);--radius:20px;
+}
+html[data-theme="light"]{
+  --bg:#f5f7ff;--bg-soft:#ffffff;--card:rgba(15,23,42,0.04);--card-solid:#ffffff;
+  --text:#0f172a;--muted:#5b6884;--border:rgba(15,23,42,0.10);
+  --shadow:0 20px 50px -25px rgba(15,23,42,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.75;overflow-x:hidden;transition:background .4s ease,color .4s ease}
+body::before{content:"";position:fixed;inset:0;
+  background:radial-gradient(700px 500px at 10% -10%, rgba(255,77,77,.22), transparent 60%),
+    radial-gradient(700px 500px at 90% 0%, rgba(34,211,238,.18), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgba(167,139,250,.18), transparent 60%);
+  z-index:-2;pointer-events:none}
+body::after{content:"";position:fixed;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:26px 26px;z-index:-1;pointer-events:none;opacity:.6}
+html[data-theme="light"] body::after{background-image:radial-gradient(rgba(15,23,42,.05) 1px, transparent 1px)}
+
+/* Progress bar */
+#progressBar{position:fixed;top:0;left:0;height:4px;width:0%;
+  background:linear-gradient(90deg,var(--primary),var(--primary-2),var(--accent));
+  z-index:999;transition:width .1s linear;box-shadow:0 0 14px rgba(255,77,77,.6)}
+
+/* Navbar */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:900;backdrop-filter:blur(16px);
+  background:color-mix(in srgb, var(--bg) 72%, transparent);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.3px}
+.brand .logo{width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;
+  font-size:20px;box-shadow:0 8px 22px -8px rgba(255,77,77,.8)}
+.brand span small{display:block;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1.6px}
+.nav-links{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;
+  padding:8px 11px;border-radius:10px;transition:.25s}
+.nav-links a:hover{color:var(--text);background:var(--card)}
+.nav-links a.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-2))}
+.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--text);
+  width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:17px;
+  display:grid;place-items:center;transition:.25s;flex:none}
+.icon-btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+.menu-toggle{display:none}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 20px 70px;position:relative}
+.hero-inner{max-width:900px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);
+  border:1px solid var(--border);padding:8px 16px;border-radius:100px;font-size:13px;
+  font-weight:600;color:var(--accent);margin-bottom:22px;animation:fadeUp .8s ease both}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 10px var(--green);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.75)}}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,6.4vw,4.4rem);
+  line-height:1.05;letter-spacing:-2px;margin-bottom:22px;animation:fadeUp .9s .1s ease both}
+.grad{background:linear-gradient(120deg,var(--primary),var(--primary-2) 45%,var(--yellow));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:680px;
+  margin:0 auto 34px;animation:fadeUp .9s .2s ease both}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .9s .3s ease both}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;
+  padding:14px 28px;border-radius:14px;transition:.3s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:9px}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;
+  box-shadow:0 14px 34px -12px rgba(255,77,77,.85)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 40px -12px rgba(255,77,77,.95)}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);transform:translateY(-3px)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;
+  max-width:820px;margin:56px auto 0;animation:fadeUp 1s .45s ease both}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:20px 14px;backdrop-filter:blur(10px)}
+.stat b{display:block;font-family:'Space Grotesk';font-size:clamp(1.5rem,4vw,2.1rem);
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:600}
+
+/* Sections */
+section.block{max-width:1180px;margin:0 auto;padding:80px 20px}
+.sec-head{text-align:center;margin-bottom:48px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.sec-head h2{font-family:'Space Grotesk';font-size:clamp(1.7rem,4.4vw,2.7rem);
+  letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
+.sec-head p{color:var(--muted);max-width:680px;margin:0 auto;font-size:15.5px}
+
+.reveal{opacity:0;transform:translateY(36px);
+  transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.show{opacity:1;transform:none}
+
+.grid{display:grid;gap:22px}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;backdrop-filter:blur(12px);transition:.35s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 26px 50px -24px rgba(34,211,238,.45)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));opacity:0;transition:.35s}
+.card:hover::before{opacity:1}
+.card .ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;
+  font-size:24px;margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(255,77,77,.2),rgba(34,211,238,.2));
+  border:1px solid var(--border)}
+.card h3{font-family:'Space Grotesk';font-size:1.2rem;margin-bottom:10px;letter-spacing:-.4px}
+.card p{color:var(--muted);font-size:14.8px;line-height:1.85}
+.card p+p{margin-top:12px}
+.card ul{margin:12px 0 0 20px;color:var(--muted);font-size:14.6px;line-height:1.85}
+.card li{margin-bottom:8px}
+.card strong{color:var(--text)}
+
+/* Accordion */
+.accordion{display:flex;flex-direction:column;gap:14px;max-width:940px;margin:0 auto}
+.acc-item{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  overflow:hidden;transition:.35s}
+.acc-item.open{border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 20px 44px -26px rgba(34,211,238,.6)}
+.acc-head{width:100%;background:none;border:none;color:var(--text);font-family:inherit;
+  font-size:15.5px;font-weight:700;text-align:left;padding:20px 24px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;transition:.25s}
+.acc-head:hover{background:rgba(255,255,255,.03)}
+.acc-num{width:32px;height:32px;border-radius:10px;flex:none;display:grid;place-items:center;
+  font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff}
+.acc-head .chev{margin-left:auto;transition:.35s;color:var(--muted);font-size:13px}
+.acc-item.open .chev{transform:rotate(180deg);color:var(--accent)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.16,1,.3,1)}
+.acc-body-inner{padding:0 24px 26px 70px;color:var(--muted);font-size:14.8px;line-height:1.9}
+.acc-body-inner p+p{margin-top:14px}
+.acc-body-inner strong{color:var(--text)}
+.acc-body-inner ul{margin:12px 0 0 20px}
+.acc-body-inner li{margin-bottom:8px}
+.hl{color:var(--accent);font-weight:700}
+.hl-r{color:var(--primary-2);font-weight:700}
+
+/* Flip cards */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.flip{perspective:1200px;height:250px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .75s cubic-bezier(.4,.2,.2,1);
+  transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;
+  padding:26px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border)}
+.flip-front{background:linear-gradient(150deg,rgba(255,77,77,.16),rgba(167,139,250,.14));
+  align-items:center;text-align:center;gap:12px}
+.flip-front .big{font-size:40px}
+.flip-front h4{font-family:'Space Grotesk';font-size:1.3rem}
+.flip-front small{color:var(--muted);font-size:12.5px}
+.flip-back{background:var(--card-solid);transform:rotateY(180deg);justify-content:flex-start;
+  border-color:color-mix(in srgb,var(--accent) 45%,transparent);overflow-y:auto}
+.flip-back h5{font-family:'Space Grotesk';font-size:1rem;margin-bottom:10px;color:var(--accent)}
+.flip-back p{font-size:13.4px;color:var(--muted);line-height:1.75}
+
+/* Timeline */
+.timeline{position:relative;max-width:900px;margin:0 auto;padding-left:36px}
+.timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--primary),var(--primary-2),var(--accent),var(--accent-2))}
+.tl-item{position:relative;margin-bottom:30px;cursor:pointer}
+.tl-item::before{content:"";position:absolute;left:-32px;top:8px;width:15px;height:15px;border-radius:50%;
+  background:var(--bg);border:3px solid var(--primary-2);box-shadow:0 0 0 4px rgba(255,138,61,.16);transition:.3s}
+.tl-item:hover::before{transform:scale(1.25);border-color:var(--accent)}
+.tl-year{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:var(--primary-2);
+  letter-spacing:1px;margin-bottom:5px}
+.tl-item h4{font-size:16.5px;margin-bottom:7px;font-family:'Space Grotesk'}
+.tl-item p{color:var(--muted);font-size:14.4px;line-height:1.8}
+.tl-more{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1)}
+.tl-item.open .tl-more{max-height:600px;margin-top:12px}
+.tl-more-inner{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 20px;font-size:14px;color:var(--muted);line-height:1.85}
+.tl-more-inner strong{color:var(--accent)}
+
+/* Map */
+.map-wrap{background:var(--card);border:1px solid var(--border);border-radius:24px;
+  padding:26px;backdrop-filter:blur(12px)}
+.map-figure{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);
+  background:#d6ecf5;cursor:zoom-in;line-height:0}
+.map-img{width:100%;height:auto;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.map-figure:hover .map-img{transform:scale(1.015)}
+.map-zoom-hint{position:absolute;right:12px;bottom:12px;line-height:1.4;
+  background:rgba(8,14,30,.78);color:#fff;border:1px solid rgba(255,255,255,.22);
+  font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:100px;
+  backdrop-filter:blur(6px);pointer-events:none}
+.map-missing{padding:60px 24px;text-align:center;color:var(--muted);font-size:14px;line-height:1.8}
+.map-missing b{color:var(--accent)}
+.map-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:8px;margin-top:22px}
+.leg{display:flex;gap:10px;align-items:center;text-align:left;font-family:inherit;
+  background:var(--card);border:1px solid var(--border);border-radius:11px;
+  padding:9px 12px;font-size:12.7px;font-weight:600;color:var(--text);
+  cursor:pointer;transition:.25s}
+.leg:hover{border-color:var(--accent);background:rgba(34,211,238,.10);transform:translateX(4px)}
+.leg .lno{width:24px;height:24px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-size:11px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2))}
+.leg .lreg{margin-left:auto;font-size:10px;font-weight:700;color:var(--muted);
+  letter-spacing:.4px;text-transform:uppercase;white-space:nowrap}
+.map-hint{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
+
+/* Map lightbox */
+.map-lightbox{position:fixed;inset:0;z-index:1200;background:rgba(4,7,16,.95);
+  backdrop-filter:blur(10px);display:grid;place-items:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .35s ease}
+.map-lightbox.open{opacity:1;pointer-events:auto}
+.map-lightbox img{max-width:100%;max-height:calc(100vh - 48px);width:auto;height:auto;
+  border-radius:14px;box-shadow:0 30px 90px -25px #000}
+.lb-close{position:absolute;top:22px;right:22px;width:46px;height:46px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;
+  font-size:19px;cursor:pointer;display:grid;place-items:center;transition:.25s}
+.lb-close:hover{background:var(--primary);border-color:var(--primary);transform:rotate(90deg)}
+
+/* Provinsi */
+.prov-controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;max-width:920px;margin-left:auto;margin-right:auto}
+.prov-search{flex:1;min-width:220px;background:var(--card);border:1px solid var(--border);
+  color:var(--text);padding:14px 18px;border-radius:14px;font-family:inherit;font-size:14.5px;font-weight:600;outline:none;transition:.3s}
+.prov-search:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(34,211,238,.15)}
+.prov-filter{background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:14px 18px;border-radius:14px;font-family:inherit;font-size:14.5px;font-weight:600;
+  outline:none;cursor:pointer}
+.prov-count{color:var(--muted);font-size:13.5px;font-weight:600;padding:14px 0}
+.prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.prov{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 16px;font-size:13.6px;font-weight:600;transition:.3s;cursor:pointer;
+  display:flex;align-items:center;gap:9px}
+.prov:hover{transform:translateY(-4px) scale(1.02);border-color:var(--primary-2);
+  background:rgba(255,138,61,.10)}
+.prov .flagdot{width:9px;height:9px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--yellow));flex:none}
+
+/* Glosarium */
+.glos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.glos{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;
+  transition:.3s;cursor:pointer}
+.glos:hover{transform:translateY(-4px);border-color:var(--accent)}
+.glos h4{font-family:'Space Grotesk';font-size:15.5px;color:var(--accent);margin-bottom:8px}
+.glos p{color:var(--muted);font-size:14px;line-height:1.75}
+
+/* Flashcard */
+.fc-wrap{max-width:640px;margin:0 auto}
+.fc{perspective:1400px;height:320px;cursor:pointer;margin-bottom:20px;
+  -webkit-tap-highlight-color:transparent}
+.fc-inner{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.4,.2,.2,1);
+  transform-style:preserve-3d}
+.fc.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:22px;padding:34px;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;border:1px solid var(--border);gap:14px}
+.fc-front{background:linear-gradient(150deg,rgba(34,211,238,.18),rgba(167,139,250,.16))}
+.fc-front .fc-cat{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--accent);text-transform:uppercase}
+.fc-front h3{font-family:'Space Grotesk';font-size:1.6rem;line-height:1.3}
+.fc-front small{color:var(--muted);font-size:12.5px}
+.fc-back{background:var(--card-solid);transform:rotateY(180deg);justify-content:flex-start;
+  border-color:color-mix(in srgb,var(--accent) 45%,transparent);overflow-y:auto;
+  text-align:left;align-items:flex-start;gap:0}
+.fc-back .fc-back-label{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--green);
+  text-transform:uppercase;margin-bottom:12px;flex:none}
+.fc-back p{font-size:14.5px;color:var(--muted);line-height:1.85}
+.fc-back strong{color:var(--text)}
+.fc-nav{display:flex;justify-content:center;gap:12px;align-items:center;flex-wrap:wrap}
+.fc-nav button{background:var(--card);border:1px solid var(--border);color:var(--text);
+  font-family:inherit;font-weight:700;font-size:14px;padding:11px 20px;border-radius:12px;
+  cursor:pointer;transition:.25s}
+.fc-nav button:hover{border-color:var(--accent);transform:translateY(-2px)}
+.fc-counter{color:var(--muted);font-size:13.5px;font-weight:700;padding:0 10px}
+
+/* Reading progress tracker */
+.read-track{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;
+  max-width:920px;margin:0 auto 40px}
+.read-item{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:8px;
+  transition:.3s;color:var(--muted)}
+.read-item.done{background:rgba(52,211,153,.14);border-color:var(--green);color:var(--green)}
+.read-item .rd{width:16px;height:16px;border-radius:5px;border:2px solid currentColor;flex:none;
+  display:grid;place-items:center;font-size:10px}
+.read-item.done .rd::after{content:"✓"}
+
+/* Quiz */
+.quiz-box{max-width:820px;margin:0 auto;background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:34px;backdrop-filter:blur(14px)}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;
+  flex-wrap:wrap;gap:10px}
+.q-counter{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px}
+.q-score{font-size:13px;font-weight:700;color:var(--yellow)}
+.q-bar{height:7px;border-radius:7px;background:rgba(255,255,255,.09);overflow:hidden;margin-bottom:26px}
+.q-bar i{display:block;height:100%;width:0;border-radius:7px;
+  background:linear-gradient(90deg,var(--primary),var(--primary-2),var(--accent));transition:width .5s ease}
+.q-text{font-family:'Space Grotesk';font-size:1.15rem;line-height:1.5;margin-bottom:24px;font-weight:600}
+.q-options{display:flex;flex-direction:column;gap:12px}
+.opt{text-align:left;background:var(--card);border:1px solid var(--border);color:var(--text);
+  font-family:inherit;font-size:14.6px;font-weight:600;padding:16px 20px;border-radius:14px;
+  cursor:pointer;transition:.25s;display:flex;align-items:center;gap:13px}
+.opt:hover:not(.locked){border-color:var(--accent);transform:translateX(6px)}
+.opt .key{width:28px;height:28px;border-radius:9px;flex:none;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:12.5px;font-weight:800}
+.opt.correct{background:rgba(52,211,153,.16);border-color:var(--green);color:var(--green)}
+.opt.correct .key{background:var(--green);color:#04241a}
+.opt.wrong{background:rgba(255,77,77,.14);border-color:var(--primary);color:#ff8080}
+.opt.wrong .key{background:var(--primary);color:#fff}
+.opt.locked{cursor:not-allowed}
+.feedback{margin-top:20px;padding:16px 20px;border-radius:14px;font-size:14.4px;
+  border:1px solid var(--border);background:rgba(255,255,255,.04);display:none}
+.feedback.show{display:block;animation:fadeUp .4s ease both}
+.quiz-actions{margin-top:24px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.result{text-align:center;padding:20px 0;display:none}
+.result.show{display:block;animation:fadeUp .6s ease both}
+.result .emoji{font-size:64px;margin-bottom:14px}
+.result h3{font-family:'Space Grotesk';font-size:1.8rem;margin-bottom:10px}
+.result .final{font-size:3rem;font-weight:800;font-family:'Space Grotesk';
+  background:linear-gradient(120deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
+.result p{color:var(--muted);margin:12px auto 24px;max-width:480px;font-size:14.6px}
+
+/* Badges */
+.badges{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.badge-item{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 18px;text-align:center;min-width:110px;transition:.3s;opacity:.4;filter:grayscale(1)}
+.badge-item.unlocked{opacity:1;filter:none;border-color:var(--yellow);
+  box-shadow:0 0 20px -6px rgba(251,191,36,.5)}
+.badge-item .bi{font-size:28px;margin-bottom:6px}
+.badge-item .bl{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+
+/* Floating TOC */
+.toc-fab{position:fixed;bottom:26px;right:26px;width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));border:none;color:#fff;
+  font-size:22px;cursor:pointer;box-shadow:0 14px 34px -8px rgba(255,77,77,.85);
+  z-index:950;transition:.3s;display:grid;place-items:center}
+.toc-fab:hover{transform:scale(1.1) rotate(8deg)}
+.toc-panel{position:fixed;bottom:96px;right:26px;width:280px;max-height:70vh;overflow-y:auto;
+  background:var(--card-solid);border:1px solid var(--border);border-radius:20px;
+  padding:16px;box-shadow:var(--shadow);z-index:950;
+  transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:.35s cubic-bezier(.16,1,.3,1)}
+.toc-panel.open{transform:none;opacity:1;pointer-events:auto}
+.toc-panel h4{font-family:'Space Grotesk';font-size:13px;color:var(--muted);margin-bottom:10px;
+  letter-spacing:1.5px;text-transform:uppercase;padding:0 8px}
+.toc-panel a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:600;transition:.25s}
+.toc-panel a:hover{background:var(--card);color:var(--text)}
+.toc-panel a.active{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff}
+.toc-panel a .tnum{font-family:'Space Grotesk';font-size:11px;font-weight:800;opacity:.7;min-width:20px}
+
+/* Footer */
+footer{border-top:1px solid var(--border);padding:46px 20px 34px;text-align:center;margin-top:40px}
+footer p{color:var(--muted);font-size:13.6px}
+footer .fbrand{font-family:'Space Grotesk';font-weight:700;font-size:1.15rem;margin-bottom:10px}
+footer .fbrand span{background:linear-gradient(120deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+footer .small{margin-top:14px;font-size:12.2px;opacity:.75}
+
+/* Toast */
+#toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,120px);
+  background:var(--card-solid);border:1px solid var(--border);color:var(--text);
+  padding:14px 24px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:var(--shadow);
+  z-index:1000;transition:.45s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:10px}
+#toast.show{transform:translate(-50%,0)}
+
+/* Responsive */
+@media(max-width:900px){
+  .nav-links{position:fixed;top:67px;left:0;right:0;background:var(--card-solid);
+    border-bottom:1px solid var(--border);flex-direction:column;align-items:stretch;
+    padding:14px;gap:4px;transform:translateY(-140%);transition:.4s cubic-bezier(.16,1,.3,1);
+    max-height:80vh;overflow-y:auto}
+  .nav-links.open{transform:translateY(0)}
+  .nav-links a{padding:13px 16px;font-size:14.5px}
+  .menu-toggle{display:grid}
+  section.block{padding:60px 18px}
+  .acc-body-inner{padding-left:24px}
+  .quiz-box{padding:24px 20px}
+  .tl-item::before{left:-30px}
+  .toc-fab{width:48px;height:48px;font-size:18px;bottom:20px;right:20px}
+  .toc-panel{right:20px;bottom:84px;width:240px}
+  .map-wrap{padding:16px}
+  .map-legend{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .leg .lreg{display:none}
+  .fc{height:340px}
+  .fc-face{padding:24px}
+  .map-lightbox{padding:12px}
+  .lb-close{top:12px;right:12px;width:40px;height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="logo">🇮🇩</div>
+      <span>NKRI Explorer<small>BELAJAR WILAYAH INDONESIA</small></span>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#pengertian" class="nav-a">Pengertian</a>
+      <a href="#sejarah" class="nav-a">Sejarah</a>
+      <a href="#wilayah" class="nav-a">Wilayah</a>
+      <a href="#batas" class="nav-a">Batas</a>
+      <a href="#laut" class="nav-a">Laut & ZEE</a>
+      <a href="#peta" class="nav-a">Peta</a>
+      <a href="#provinsi" class="nav-a">Provinsi</a>
+      <a href="#glosarium" class="nav-a">Glosarium</a>
+      <a href="#flashcard" class="nav-a">Flashcard</a>
+      <a href="#wawasan" class="nav-a">Wawasan</a>
+      <a href="#ancaman" class="nav-a">Ancaman</a>
+      <a href="#globalisasi" class="nav-a">Globalisasi</a>
+      <a href="#kuis" class="nav-a">Kuis</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="icon-btn" id="soundBtn" title="Suara">🔊</button>
+      <button class="icon-btn" id="themeBtn" title="Ganti tema">🌙</button>
+      <button class="icon-btn menu-toggle" id="menuBtn" title="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="dot"></span> Pembelajaran Interaktif • PPKn & Geografi</div>
+    <h1>Jelajahi <span class="grad">Wilayah Negara Kesatuan Republik Indonesia</span></h1>
+    <p class="lead">
+      Dari Sabang sampai Merauke, dari Miangas sampai Pulau Rote. Pelajari bagaimana Indonesia
+      menjadi satu kesatuan wilayah yang utuh — darat, laut, dan udara — melalui materi lengkap
+      5.000+ kata, peta interaktif, glosarium, flashcard, dan kuis seru.
+    </p>
+    <div class="hero-cta">
+      <a href="#pengertian" class="btn btn-primary">🚀 Mulai Belajar</a>
+      <a href="#kuis" class="btn btn-ghost">🎯 Langsung ke Kuis</a>
+      <a href="#flashcard" class="btn btn-ghost">🃏 Flashcard</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>17.508</b><span>PULAU</span></div>
+      <div class="stat"><b>38</b><span>PROVINSI</span></div>
+      <div class="stat"><b>5,18 jt</b><span>KM² LUAS DARAT</span></div>
+      <div class="stat"><b>6,4 jt</b><span>KM² LUAS LAUT</span></div>
+      <div class="stat"><b>5.000+</b><span>KATA MATERI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PENGERTIAN ============ -->
+<section class="block" id="pengertian">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 01</div>
+    <h2>Apa Itu NKRI?</h2>
+    <p>Memahami hakikat negara kesatuan, dasar hukum, dan prinsip-prinsip yang menopangnya.</p>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:30px">
+    <div class="card reveal">
+      <div class="ic">🏛️</div>
+      <h3>Definisi NKRI</h3>
+      <p>
+        <strong>Negara Kesatuan Republik Indonesia (NKRI)</strong> adalah negara berdaulat yang
+        berbentuk kesatuan dengan pemerintahan republik, di mana seluruh wilayahnya merupakan
+        satu kesatuan yang tidak terpisahkan. Kedaulatan berada di tangan rakyat dan dilaksanakan
+        menurut Undang-Undang Dasar. Istilah "kesatuan" mengandung makna bahwa tidak ada bagian
+        wilayah yang memiliki status sebagai negara bagian dengan kedaulatan tersendiri seperti
+        pada negara federal.
+      </p>
+      <p>
+        Dalam NKRI, pemerintah pusat memegang kedaulatan tertinggi dan mendelegasikan sebagian
+        kewenangan kepada daerah otonom melalui mekanisme desentralisasi. Namun, kewenangan
+        tersebut tetap dapat ditarik kembali atau diatur ulang oleh pemerintah pusat sesuai dengan
+        kepentingan nasional dan peraturan perundang-undangan yang berlaku.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🧩</div>
+      <h3>Negara Kesatuan vs Federal</h3>
+      <p>
+        Dalam <strong>negara kesatuan (unitary state)</strong>, hanya ada satu pemerintahan
+        berdaulat yakni pemerintah pusat. Daerah otonom memperoleh kewenangan dari pusat, bukan
+        dari konstitusi yang berdiri sendiri. Sebaliknya, dalam <strong>negara federal</strong>,
+        negara bagian memiliki kedaulatan sendiri yang dijamin konstitusi dan tidak dapat
+        ditarik pusat secara sepihak.
+      </p>
+      <p>
+        Indonesia pernah merasakan bentuk federal pada periode <em>Republik Indonesia Serikat
+        (RIS)</em> tahun 1949–1950. Pengalaman itu menunjukkan bahwa bentuk federal kurang cocok
+        dengan kondisi sosial-budaya Indonesia yang menjunjung tinggi persatuan, sehingga pada
+        17 Agustus 1950 Indonesia kembali ke bentuk negara kesatuan.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">📜</div>
+      <h3>Dasar Hukum Utama</h3>
+      <p>
+        <strong>Pasal 1 ayat (1) UUD 1945</strong> menegaskan bahwa negara Indonesia ialah negara
+        kesatuan yang berbentuk republik. <strong>Pasal 25A</strong> menegaskan bahwa NKRI adalah
+        sebuah negara kepulauan yang berciri nusantara dengan wilayah yang batas-batas dan
+        hak-haknya ditetapkan dengan undang-undang.
+      </p>
+      <p>
+        Selain itu, <strong>Pasal 18</strong> mengatur pembagian daerah dalam NKRI, sementara
+        <strong>Pasal 33 dan 34</strong> menegaskan bahwa bumi, air, dan kekayaan alam dikuasai
+        negara untuk sebesar-besarnya kemakmuran rakyat. Berbagai undang-undang turunan seperti
+        UU No. 23 Tahun 2014 tentang Pemerintahan Daerah dan UU No. 6 Tahun 1996 tentang Perairan
+        Indonesia memperkuat kerangka hukum NKRI.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">⚖️</div>
+      <h3>Prinsip Kesatuan</h3>
+      <p>
+        NKRI menganut prinsip <strong>desentralisasi</strong>, <strong>otonomi daerah</strong>,
+        dan <strong>dekonsentrasi</strong>. Daerah diberikan kewenangan mengurus rumah tangganya
+        sendiri, namun tetap dalam kerangka NKRI yang utuh dan berdaulat.
+      </p>
+      <p>
+        Ada tiga pilar utama kesatuan NKRI: (1) <strong>kesatuan wilayah</strong> — darat, laut,
+        dan udara adalah satu; (2) <strong>kesatuan bangsa</strong> — semua suku, agama, dan
+        golongan bersatu; (3) <strong>kesatuan sosial-ekonomi</strong> — pembangunan yang merata
+        di seluruh pelosok negeri.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🌟</div>
+      <h3>Karakteristik NKRI</h3>
+      <p>
+        Sebagai negara kesatuan, NKRI memiliki beberapa karakteristik khas yang membedakannya dari
+        negara lain. Pertama, adanya satu konstitusi nasional yakni UUD 1945 yang menjadi hukum
+        tertinggi. Kedua, satu kepala negara dan kepala pemerintahan, yakni Presiden, yang dipilih
+        langsung oleh rakyat.
+      </p>
+      <p>
+        Ketiga, adanya satu bendera (Sang Saka Merah Putih), satu bahasa persatuan (Bahasa
+        Indonesia), satu lambang negara (Garuda Pancasila), dan satu lagu kebangsaan (Indonesia
+        Raya). Semua ini menjadi simbol pemersatu yang mengikat seluruh rakyat dari Sabang sampai
+        Merauke.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🎓</div>
+      <h3>Makna Penting NKRI bagi Pelajar</h3>
+      <p>
+        Bagi pelajar, memahami NKRI bukan sekadar menghafal definisi. Ini tentang menumbuhkan
+        kesadaran bahwa setiap jengkal wilayah Indonesia adalah warisan leluhur yang harus
+        dijaga. Bangsa Indonesia pernah mengalami penjajahan ratusan tahun, dan kemerdekaan
+        diperoleh dengan darah serta air mata para pahlawan.
+      </p>
+      <p>
+        Dengan memahami NKRI, pelajar diharapkan tumbuh menjadi warga negara yang cinta tanah air,
+        menghargai keberagaman, dan siap berkontribusi menjaga keutuhan bangsa di era digital ini.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEJARAH ============ -->
+<section class="block" id="sejarah">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 02</div>
+    <h2>Sejarah Terbentuknya NKRI</h2>
+    <p>Perjalanan panjang dari Sumpah Pemuda hingga kembali ke bentuk negara kesatuan. Klik setiap peristiwa untuk detail lengkap.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-year">28 OKTOBER 1928</div>
+      <h4>Sumpah Pemuda</h4>
+      <p>Kongres Pemuda II di Jakarta menghasilkan ikrar satu tanah air, satu bangsa, dan satu bahasa: Indonesia.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Latar belakang:</strong> Sebelum 1928, perjuangan kemerdekaan bersifat kedaerahan
+          — ada perjuangan Jawa, Sumatera, Sulawesi, dan daerah lainnya yang berjalan sendiri-sendiri.
+          Kaum muda terpelajar menyadari bahwa perjuangan terpisah mudah dipatahkan penjajah.
+        </p>
+        <p>
+          <strong>Tokoh penting:</strong> Mohammad Yamin, Soegondo Djojopoespito, WR Supratman,
+          dan lainnya. WR Supratman pertama kali memperdengarkan lagu <em>Indonesia Raya</em>
+          dengan biola di depan kongres.
+        </p>
+        <p>
+          <strong>Makna:</strong> Sumpah Pemuda menjadi tonggak kesadaran nasional bahwa wilayah
+          Nusantara adalah satu kesatuan tanah air yang harus diperjuangkan bersama. Ikrar ini
+          menjadi fondasi ideologis bagi terbentuknya NKRI nanti.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">17 AGUSTUS 1945</div>
+      <h4>Proklamasi Kemerdekaan</h4>
+      <p>Indonesia memproklamasikan kemerdekaannya di Jalan Pegangsaan Timur 56, Jakarta.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Peristiwa:</strong> Setelah Jepang menyerah kepada Sekutu pada 15 Agustus 1945,
+          terjadi kekosongan kekuasaan. Golongan muda mendesak Soekarno-Hatta untuk segera
+          memproklamasikan kemerdekaan. Peristiwa Rengasdengklok menjadi titik krusial.
+        </p>
+        <p>
+          <strong>Isi proklamasi:</strong> Ditulis oleh Soekarno, disempurnakan oleh Mohammad
+          Hatta dan Ahmad Soebardjo, diketik oleh Sayuti Melik. Ditandatangani Soekarno-Hatta
+          atas nama bangsa Indonesia.
+        </p>
+        <p>
+          <strong>Makna:</strong> Dalam Pembukaan UUD 1945 ditegaskan bahwa kemerdekaan adalah
+          hak segala bangsa. Indonesia menyatakan diri sebagai negara kesatuan yang merdeka
+          dan berdaulat, terlepas dari penjajahan.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1945 – 1949</div>
+      <h4>Perang Kemerdekaan & Revolusi Fisik</h4>
+      <p>Perjuangan mempertahankan kemerdekaan dari agresi Belanda yang ingin kembali menjajah.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Peristiwa penting:</strong> Pertempuran Surabaya (10 November 1945), Bandung
+          Lautan Api, Agresi Militer Belanda I (1947) dan II (1948), Serangan Umum 1 Maret 1949
+          di Yogyakarta.
+        </p>
+        <p>
+          <strong>Diplomasi:</strong> Perjanjian Linggarjati (1946), Renville (1948), Roem-Royen
+          (1949), dan Konferensi Meja Bundar (KMB) di Den Haag (1949).
+        </p>
+        <p>
+          <strong>Makna:</strong> Menunjukkan bahwa wilayah NKRI diperjuangkan dengan darah dan
+          air mata. Setiap jengkal wilayah memiliki nilai sejarah perjuangan.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1949 – 1950</div>
+      <h4>Periode Republik Indonesia Serikat (RIS)</h4>
+      <p>Hasil KMB memaksa Indonesia berubah menjadi negara federal bernama RIS.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Struktur RIS:</strong> Terdiri dari 16 negara bagian, salah satunya Republik
+          Indonesia yang berpusat di Yogyakarta. Soekarno menjadi Presiden RIS, Hatta menjadi
+          Perdana Menteri.
+        </p>
+        <p>
+          <strong>Masalah:</strong> Bentuk federal dianggap tidak sesuai dengan cita-cita
+          proklamasi karena memecah kesatuan bangsa. Banyak negara bagian yang kemudian
+          menggabungkan diri ke Republik Indonesia.
+        </p>
+        <p>
+          <strong>Kesimpulan:</strong> Rakyat Indonesia menginginkan bentuk kesatuan yang
+          mencerminkan Sumpah Pemuda dan Proklamasi.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">17 AGUSTUS 1950</div>
+      <h4>Kembali ke NKRI</h4>
+      <p>RIS dibubarkan dan Indonesia kembali menjadi Negara Kesatuan Republik Indonesia.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Peristiwa:</strong> Pada 17 Agustus 1950, RIS resmi dibubarkan dan Indonesia
+          kembali ke bentuk negara kesatuan dengan UUD Sementara 1950. Soekarno kembali menjadi
+          Presiden NKRI.
+        </p>
+        <p>
+          <strong>Makna:</strong> Sejak saat itu, bentuk negara kesatuan dipertahankan hingga
+          kini. Semua upaya memecah NKRI — seperti pemberontakan RMS, PRRI/Permesta, DI/TII,
+          dan GAM — berhasil diatasi.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">13 DESEMBER 1957</div>
+      <h4>Deklarasi Djuanda</h4>
+      <p>Perdana Menteri Djuanda mendeklarasikan bahwa laut Indonesia adalah satu kesatuan.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Latar belakang:</strong> Sebelum 1957, wilayah laut Indonesia mengikuti
+          <em>Territoriale Zee en Maritieme Kringen Ordonnantie</em> warisan Belanda yang hanya
+          menghitung 3 mil laut dari garis pantai setiap pulau. Akibatnya, laut antarpulau
+          dianggap laut bebas dan kapal asing bisa leluasa.
+        </p>
+        <p>
+          <strong>Deklarasi:</strong> Djuanda Kartawidjaja menyatakan bahwa Indonesia adalah
+          negara kepulauan yang utuh, dan laut antarpulau adalah bagian wilayah kedaulatan NKRI.
+          Prinsip ini dikenal sebagai <strong>asas negara kepulauan (archipelagic state)</strong>.
+        </p>
+        <p>
+          <strong>Hasil:</strong> Deklarasi ini menjadi dasar perjuangan Indonesia di forum
+          internasional hingga akhirnya diakui dalam UNCLOS 1982.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">10 DESEMBER 1982</div>
+      <h4>UNCLOS 1982 (Konvensi Hukum Laut PBB)</h4>
+      <p>Indonesia menandatangani konvensi yang mengakui prinsip negara kepulauan.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Peristiwa:</strong> Di Montego Bay, Jamaika, PBB mengadopsi United Nations
+          Convention on the Law of the Sea (UNCLOS). Konvensi ini mengakui prinsip negara
+          kepulauan yang diperjuangkan Indonesia sejak Deklarasi Djuanda.
+        </p>
+        <p>
+          <strong>Ratifikasi:</strong> Indonesia meratifikasi UNCLOS melalui UU No. 17 Tahun 1985.
+          Luas wilayah laut Indonesia bertambah dari sekitar 2 juta km² menjadi lebih dari 6 juta km².
+        </p>
+        <p>
+          <strong>Makna:</strong> Kemenangan diplomatik besar bagi NKRI, memperkokoh posisi
+          Indonesia sebagai negara maritim.
+        </p>
+      </div></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1998 – SEKARANG</div>
+      <h4>Era Reformasi & Otonomi Daerah</h4>
+      <p>Reformasi membawa perubahan besar dengan diterapkannya otonomi daerah.</p>
+      <div class="tl-more"><div class="tl-more-inner">
+        <p>
+          <strong>Latar belakang:</strong> Krisis ekonomi 1997 dan tuntutan reformasi
+          menyebabkan Soeharto mengundurkan diri pada 21 Mei 1998. Muncul tuntutan
+          desentralisasi dan otonomi daerah.
+        </p>
+        <p>
+          <strong>Kebijakan:</strong> UU No. 22 Tahun 1999 (kemudian direvisi menjadi UU No. 23
+          Tahun 2014 dan UU No. 9 Tahun 2015) tentang Pemerintahan Daerah. Provinsi dan
+          kabupaten/kota mendapat kewenangan lebih luas.
+        </p>
+        <p>
+          <strong>Pemekaran wilayah:</strong> Sejak 1999, banyak provinsi dan kabupaten baru
+          dibentuk untuk mempercepat pembangunan dan mendekatkan pelayanan. Pada 2022, empat
+          provinsi baru di Papua dibentuk: Papua Selatan, Papua Tengah, Papua Pegunungan, dan
+          Papua Barat Daya — sehingga total menjadi 38 provinsi.
+        </p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WILAYAH ============ -->
+<section class="block" id="wilayah">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 03</div>
+    <h2>Wilayah NKRI: Darat, Laut, dan Udara</h2>
+    <p>Indonesia adalah negara kepulauan terbesar di dunia dengan tiga dimensi wilayah kedaulatan.</p>
+  </div>
+
+  <div class="accordion" id="accWilayah">
+    <div class="acc-item">
+      <button class="acc-head"><span class="acc-num">1</span> Wilayah Daratan (Teritorial Darat) <span class="chev">▼</span></button>
+      <div class="acc-body"><div class="acc-body-inner">
+        <p>
+          Wilayah daratan Indonesia mencakup seluruh pulau, tanah, dan daratan yang berada di
+          bawah kedaulatan NKRI. Luas daratan Indonesia sekitar <span class="hl">5,18 juta km²</span>
+          yang tersebar pada lebih dari <span class="hl">17.000 pulau</span> besar dan kecil.
+          Dari jumlah tersebut, sekitar 6.000 pulau berpenghuni dan sisanya masih kosong atau
+          hanya digunakan untuk kepentingan tertentu.
+        </p>
+        <p>
+          Wilayah daratan meliputi pula <strong>perairan darat</strong> seperti sungai, danau,
+          rawa, serta <strong>tanah di bawah permukaan</strong> hingga kedalaman tertentu. Batas
+          daratan antarnegara biasanya ditentukan melalui perjanjian bilateral dan penanda batas
+          fisik seperti patok, tembok, atau sungai.
+        </p>
+        <p>
+          Indonesia memiliki lebih dari 500 sungai besar dan kecil. Beberapa sungai terpanjang
+          antara lain Sungai Kapuas (Kalimantan, ±1.143 km), Sungai Mahakam (Kalimantan, ±980 km),
+          Sungai Barito (Kalimantan, ±909 km), dan Sungai Musi (Sumatera, ±750 km). Danau terbesar
+          adalah Danau Toba di Sumatera Utara (±1.130 km²), sementara Danau Sentani di Papua
+          terkenal akan keindahannya.
+        </p>
+        <p>
+          Beberapa pulau besar yang menjadi bagian utama wilayah daratan NKRI antara lain:
+        </p>
+        <ul>
+          <li><strong>Sumatera</strong> — pulau terbesar keenam di dunia, kaya akan sumber daya alam seperti minyak, gas, dan batu bara.</li>
+          <li><strong>Jawa</strong> — pulau terpadat penduduknya sekaligus pusat pemerintahan dan ekonomi.</li>
+          <li><strong>Kalimantan</strong> — wilayah Indonesia menempati sekitar dua per tiga bagian utara pulau.</li>
+          <li><strong>Sulawesi</strong> — memiliki bentuk khas menyerupai huruf K dengan empat semenanjung.</li>
+          <li><strong>Papua</strong> — pulau terbesar kedua di dunia, kaya akan keanekaragaman hayati dan tambang emas.</li>
+        </ul>
+        <p>
+          Selain pulau-pulau besar, terdapat pula gugusan pulau kecil yang tidak kalah penting,
+          seperti Kepulauan Natuna, Kepulauan Maluku, Kepulauan Riau, Kepulauan Bangka Belitung,
+          dan Kepulauan Nusa Tenggara. Setiap pulau memiliki karakteristik budaya dan ekosistem
+          yang unik.
+        </p>
+      </div></div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-head"><span class="acc-num">2</span> Wilayah Lautan (Teritorial Laut) <span class="chev">▼</span></button>
+      <div class="acc-body"><div class="acc-body-inner">
+        <p>
+          Wilayah laut Indonesia sangat luas, mencapai sekitar <span class="hl">6,4 juta km²</span>
+          dengan garis pantai terpanjang kedua di dunia (± 99.000 km). Sebagai negara kepulauan,
+          laut bukan pemisah, melainkan <strong>pemersatu</strong> antarpulau. Konsep ini menjadi
+          inti dari Wawasan Nusantara.
+        </p>
+        <p>
+          Berdasarkan <strong>UNCLOS 1982</strong> yang diratifikasi Indonesia melalui UU No. 17
+          Tahun 1985, wilayah laut NKRI dibagi menjadi beberapa zona:
+        </p>
+        <ul>
+          <li><strong>Perairan Pedalaman (Internal Waters)</strong> — perairan di sisi dalam garis pangkal, kedaulatan penuh Indonesia.</li>
+          <li><strong>Laut Teritorial</strong> — 12 mil laut dari garis pangkal, kedaulatan penuh Indonesia.</li>
+          <li><strong>Zona Tambahan</strong> — 24 mil laut, untuk pengawasan imigrasi, bea cukai, fiskal, dan karantina.</li>
+          <li><strong>Zona Ekonomi Eksklusif (ZEE)</strong> — 200 mil laut, hak eksklusif mengelola sumber daya alam.</li>
+          <li><strong>Landas Kontinen</strong> — dasar laut hingga 200 mil atau lebih, untuk eksplorasi sumber daya.</li>
+          <li><strong>Laut Lepas</strong> — di luar yurisdiksi negara mana pun, milik bersama umat manusia.</li>
+        </ul>
+        <p>
+          Indonesia juga memiliki beberapa <strong>selat strategis</strong> yang menjadi jalur
+          pelayaran internasional, seperti Selat Malaka, Selat Sunda, Selat Lombok, Selat
+          Makassar, dan Selat Ombai-Wetar. Selat-selat ini menjadi jalur ALKI (Alur Laut
+          Kepulauan Indonesia) yang diakui dunia.
+        </p>
+        <p>
+          Kekayaan laut Indonesia meliputi berbagai jenis ikan, terumbu karang, rumput laut,
+          minyak bumi, gas alam, dan mineral. Potensi ekonomi laut Indonesia diperkirakan
+          mencapai triliunan rupiah per tahun, menjadikan sektor kelautan sebagai pilar
+          penting pembangunan nasional.
+        </p>
+      </div></div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-head"><span class="acc-num">3</span> Wilayah Udara (Ruang Udara) <span class="chev">▼</span></button>
+      <div class="acc-body"><div class="acc-body-inner">
+        <p>
+          Wilayah udara NKRI adalah ruang udara yang berada di atas wilayah daratan dan lautan
+          Indonesia. Indonesia memiliki <strong>kedaulatan penuh</strong> atas ruang udaranya,
+          sesuai dengan Konvensi Chicago 1944 dan UU No. 1 Tahun 2009 tentang Penerbangan.
+        </p>
+        <p>
+          Aturan umum yang berlaku (teori dan praktik internasional):
+        </p>
+        <ul>
+          <li>Ketinggian hingga <strong>± 110 km</strong> di atas permukaan laut masih termasuk wilayah udara suatu negara.</li>
+          <li>Di atas batas tersebut dikenal sebagai <strong>ruang angkasa (outer space)</strong> yang tidak dapat diklaim kedaulatannya.</li>
+          <li>Negara berhak mengatur penerbangan sipil dan militer di wilayah udaranya.</li>
+          <li>Pesawat asing hanya boleh melintas dengan izin sesuai perjanjian internasional.</li>
+        </ul>
+        <p>
+          Indonesia memiliki <strong>Flight Information Region (FIR)</strong> yang mencakup
+          wilayah udara di atas daratan, laut teritorial, dan sebagian ruang udara di atas
+          perairan internasional. Pengelolaan ruang udara Indonesia dilakukan oleh
+          <strong>AirNav Indonesia</strong>, sementara TNI AU bertugas menjaga kedaulatan
+          udara NKRI.
+        </p>
+        <p>
+          Beberapa pangkalan udara utama TNI AU antara lain Lanud Halim Perdanakusuma (Jakarta),
+          Lanud Iswahjudi (Madiun), Lanud Sultan Hasanuddin (Makassar), dan Lanud Manuhua
+          (Biak). Pangkalan-pangkalan ini menjadi garda terdepan menjaga kedaulatan udara
+          Indonesia dari berbagai ancaman.
+        </p>
+      </div></div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-head"><span class="acc-num">4</span> Wilayah Ekstrateritorial <span class="chev">▼</span></button>
+      <div class="acc-body"><div class="acc-body-inner">
+        <p>
+          <strong>Wilayah ekstrateritorial</strong> adalah wilayah yang secara hukum dianggap
+          sebagai wilayah suatu negara, meskipun secara fisik berada di luar batas geografisnya.
+          Prinsip ini diakui dalam hukum internasional untuk melindungi kepentingan negara dan
+          warga negaranya di luar negeri.
+        </p>
+        <p>Contoh wilayah ekstrateritorial Indonesia:</p>
+        <ul>
+          <li><strong>Kedutaan Besar dan Konsulat</strong> Indonesia di negara lain — meskipun berada di wilayah negara asing, kantor perwakilan Indonesia tetap tunduk pada hukum Indonesia dalam hal tertentu.</li>
+          <li><strong>Kapal laut</strong> yang mengibarkan bendera Indonesia di laut lepas — tunduk pada yurisdiksi Indonesia.</li>
+          <li><strong>Pesawat udara</strong> berbendera Indonesia saat berada di wilayah udara asing — tunduk pada yurisdiksi Indonesia.</li>
+          <li><strong>Markas pasukan penjaga perdamaian PBB</strong> yang dihuni pasukan Indonesia — dianggap wilayah Indonesia.</li>
+        </ul>
+        <p>
+          Prinsip ekstrateritorial memberikan kekebalan dan hak hukum tertentu terhadap aset dan
+          warga negara yang berada di wilayah tersebut. Namun, kekebalan ini tidak bersifat
+          absolut — tetap ada batasan yang diatur oleh hukum internasional dan perjanjian
+          bilateral.
+        </p>
+      </div></div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-head"><span class="acc-num">5</span> Konsep Wawasan Nusantara <span class="chev">▼</span></button>
+      <div class="acc-body"><div class="acc-body-inner">
+        <p>
+          <strong>Wawasan Nusantara</strong> adalah cara pandang bangsa Indonesia terhadap diri
+          dan wilayahnya sebagai satu kesatuan yang utuh dan menyeluruh. Konsep ini lahir dari
+          kesadaran bahwa Indonesia adalah negara kepulauan yang terdiri dari ribuan pulau,
+          namun tetap satu dalam kebinekaan.
+        </p>
+        <p>
+          Wawasan Nusantara mencakup beberapa aspek kesatuan:
+        </p>
+        <ul>
+          <li><strong>Kesatuan wilayah</strong> — darat, laut, dan udara adalah satu kesatuan yang tidak terpisahkan.</li>
+          <li><strong>Kesatuan bangsa</strong> — semua suku, agama, ras, dan golongan bersatu dalam satu identitas: Bangsa Indonesia.</li>
+          <li><strong>Kesatuan ideologi</strong> — Pancasila sebagai dasar negara dan pandangan hidup bangsa.</li>
+          <li><strong>Kesatuan politik</strong> — satu sistem politik, satu hukum, satu pemerintahan.</li>
+          <li><strong>Kesatuan sosial-budaya</strong> — kebinekaan adalah kekayaan, bukan perpecahan.</li>
+          <li><strong>Kesatuan ekonomi</strong> — pembangunan yang merata di seluruh wilayah.</li>
+          <li><strong>Kesatuan pertahanan-keamanan</strong> — satu sistem pertahanan nasional.</li>
+        </ul>
+        <p>
+          Wawasan Nusantara menjadi landasan bagi kebijakan pembangunan nasional, termasuk
+          pembangunan daerah tertinggal, perbatasan, dan pulau-pulau terluar. Konsep ini juga
+          menjadi dasar bagi Indonesia untuk menegaskan kedaulatannya atas wilayah laut dan
+          udara.
+        </p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BATAS ============ -->
+<section class="block" id="batas">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 04</div>
+    <h2>Batas-Batas Wilayah Indonesia</h2>
+    <p>Klik setiap kartu untuk melihat detail batas wilayah di empat arah mata angin.</p>
+  </div>
+
+  <div class="flip-grid">
+    <div class="flip reveal">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="big">⬆️</div>
+          <h4>Sebelah Utara</h4>
+          <small>Klik untuk melihat</small>
+        </div>
+        <div class="flip-face flip-back">
+          <h5>BATAS UTARA</h5>
+          <p>
+            <strong>Darat:</strong> Malaysia (Sabah & Sarawak), Papua Nugini (sebelah utara
+            Papua).<br><br>
+            <strong>Laut:</strong> Selat Malaka, Laut Natuna, Laut Sulawesi, Samudra Pasifik,
+            dan Selat Singapura.<br><br>
+            <strong>Negara tetangga:</strong> Malaysia, Singapura, Vietnam, Filipina, Thailand,
+            dan Palau.<br><br>
+            <strong>Titik terluar:</strong> Pulau Miangas (Sulawesi Utara).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip reveal">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="big">⬇️</div>
+          <h4>Sebelah Selatan</h4>
+          <small>Klik untuk melihat</small>
+        </div>
+        <div class="flip-face flip-back">
+          <h5>BATAS SELATAN</h5>
+          <p>
+            <strong>Laut:</strong> Samudra Hindia dan Laut Timor.<br><br>
+            <strong>Negara tetangga:</strong> Australia dan Timor Leste.<br><br>
+            <strong>Catatan:</strong> Tidak ada batas darat di sebelah selatan karena seluruhnya
+            berupa laut terbuka.<br><br>
+            <strong>Titik terluar:</strong> Pulau Rote (Nusa Tenggara Timur).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip reveal">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="big">➡️</div>
+          <h4>Sebelah Timur</h4>
+          <small>Klik untuk melihat</small>
+        </div>
+        <div class="flip-face flip-back">
+          <h5>BATAS TIMUR</h5>
+          <p>
+            <strong>Darat:</strong> Papua Nugini.<br><br>
+            <strong>Laut:</strong> Samudra Pasifik, Laut Arafuru, dan Laut Banda.<br><br>
+            <strong>Negara tetangga:</strong> Papua Nugini, Palau, dan Timor Leste.<br><br>
+            <strong>Titik terluar:</strong> Pulau Merauke (Papua).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip reveal">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="big">⬅️</div>
+          <h4>Sebelah Barat</h4>
+          <small>Klik untuk melihat</small>
+        </div>
+        <div class="flip-face flip-back">
+          <h5>BATAS BARAT</h5>
+          <p>
+            <strong>Laut:</strong> Samudra Hindia dan Selat Malaka.<br><br>
+            <strong>Negara tetangga:</strong> India (Pulau Nicobar) dan Malaysia.<br><br>
+            <strong>Catatan:</strong> Pulau Rondo di Aceh adalah titik paling barat NKRI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:26px">
+    <div class="ic">📍</div>
+    <h3>Titik Ekstrem Indonesia</h3>
+    <p style="margin-bottom:14px">
+      Indonesia memiliki empat titik terluar yang menjadi penanda kedaulatan wilayah NKRI:
+    </p>
+    <div class="grid grid-2" style="gap:14px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+        <strong style="color:var(--accent)">Utara</strong>
+        <p style="font-size:14px;color:var(--muted);margin-top:5px">Pulau Miangas, Sulawesi Utara (3°17′ LU)</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+        <strong style="color:var(--accent)">Selatan</strong>
+        <p style="font-size:14px;color:var(--muted);margin-top:5px">Pulau Rote, Nusa Tenggara Timur (11°S)</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+        <strong style="color:var(--accent)">Barat</strong>
+        <p style="font-size:14px;color:var(--muted);margin-top:5px">Pulau Rondo, Aceh (95°BT)</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+        <strong style="color:var(--accent)">Timur</strong>
+        <p style="font-size:14px;color:var(--muted);margin-top:5px">Pulau Merauke, Papua (141°BT)</p>
+      </div>
+    </div>
+    <p style="margin-top:16px">
+      Panjang wilayah NKRI dari barat ke timur sekitar <strong>5.120 km</strong> (setara jarak
+      London–Baghdad), sedangkan lebar dari utara ke selatan sekitar <strong>1.888 km</strong>.
+      Rentang ini menjadikan Indonesia sebagai salah satu negara dengan wilayah terluas di dunia.
+    </p>
+  </div>
+</section>
+
+<!-- ============ LAUT & ZEE ============ -->
+<section class="block" id="laut">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 05</div>
+    <h2>Deklarasi Djuanda & Zona Ekonomi Eksklusif</h2>
+    <p>Bagaimana Indonesia memperjuangkan wilayah lautnya hingga diakui dunia.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card reveal">
+      <div class="ic">🌊</div>
+      <h3>Deklarasi Djuanda (1957)</h3>
+      <p>
+        Sebelum 1957, wilayah laut Indonesia mengikuti <em>Territoriale Zee en Maritieme Kringen
+        Ordonnantie</em> warisan Belanda yang hanya menghitung 3 mil laut dari garis pantai setiap
+        pulau. Akibatnya, laut antarpulau dianggap sebagai laut bebas dan kapal asing bisa
+        leluasa melintas.
+      </p>
+      <p>
+        Pada <strong>13 Desember 1957</strong>, Perdana Menteri <strong>Djuanda Kartawidjaja</strong>
+        mendeklarasikan bahwa Indonesia adalah negara kepulauan yang utuh, dan laut antarpulau
+        merupakan bagian dari wilayah kedaulatan NKRI. Prinsip ini dikenal sebagai
+        <span class="hl">asas negara kepulauan (archipelagic state)</span>.
+      </p>
+      <p>
+        Deklarasi ini menuai protes dari beberapa negara maritim besar, namun Indonesia terus
+        memperjuangkannya di forum internasional. Perjuangan ini membuahkan hasil 25 tahun
+        kemudian melalui UNCLOS 1982.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="ic">⚓</div>
+      <h3>UNCLOS 1982</h3>
+      <p>
+        Perjuangan Indonesia berbuah pada <strong>Konvensi Hukum Laut PBB (UNCLOS) 1982</strong>
+        di Montego Bay, Jamaika. Konvensi ini mengakui prinsip negara kepulauan dan mengatur
+        pembagian wilayah laut secara internasional.
+      </p>
+      <p>
+        Indonesia meratifikasi UNCLOS melalui <strong>UU No. 17 Tahun 1985</strong>, sehingga
+        luas wilayah laut Indonesia bertambah dari sekitar 2 juta km² menjadi lebih dari
+        6 juta km². Ini adalah kemenangan diplomatik besar bagi NKRI.
+      </p>
+      <p>
+        UNCLOS juga mengatur tentang <strong>Alur Laut Kepulauan Indonesia (ALKI)</strong> —
+        jalur pelayaran internasional yang melewati perairan Indonesia. Ada tiga ALKI utama:
+        ALKI I (Selat Malaka–Selat Sunda), ALKI II (Selat Lombok–Selat Makassar), dan ALKI III
+        (Laut Sawu–Selat Ombai–Laut Banda).
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="ic">💎</div>
+      <h3>Zona Ekonomi Eksklusif (ZEE)</h3>
+      <p>
+        ZEE adalah zona selebar <strong>200 mil laut</strong> dari garis pangkal, di mana Indonesia
+        memiliki hak eksklusif untuk mengeksplorasi dan memanfaatkan sumber daya alam, baik hayati
+        maupun non-hayati.
+      </p>
+      <p>
+        Di ZEE, kapal asing tidak boleh menangkap ikan atau mengambil sumber daya tanpa izin.
+        Namun, negara lain masih memiliki kebebasan pelayaran dan pemasangan kabel bawah laut.
+        Pengaturan ZEE diatur dalam <strong>UU No. 5 Tahun 1983</strong>.
+      </p>
+      <p>
+        Potensi ZEE Indonesia sangat besar: diperkirakan mencapai <strong>US$ 1,2 triliun per
+        tahun</strong> dari sektor perikanan, migas, dan mineral. Sayangnya, masih sering terjadi
+        pencurian ikan (illegal fishing) oleh kapal asing, sehingga pengawasan perlu terus
+        ditingkatkan.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="ic">🛡️</div>
+      <h3>Menjaga Kedaulatan Laut</h3>
+      <p>
+        Untuk menjaga wilayah lautnya, Indonesia memiliki beberapa institusi dan kebijakan:
+      </p>
+      <ul>
+        <li><strong>TNI AL</strong> — menjaga keamanan perairan NKRI dengan armada kapal perang dan pesawat patroli.</li>
+        <li><strong>Bakamla</strong> — Badan Keamanan Laut RI, koordinator patroli laut.</li>
+        <li><strong>Kementerian KKP</strong> — mengelola sumber daya kelautan dan perikanan, termasuk pemberantasan illegal fishing.</li>
+        <li><strong>Polair</strong> — kepolisian perairan untuk penegakan hukum di laut.</li>
+        <li><strong>Program Poros Maritim Dunia</strong> — visi Indonesia sebagai negara maritim kuat, diresmikan Presiden Jokowi pada 2014.</li>
+      </ul>
+      <p>
+        Selain itu, Indonesia aktif dalam kerja sama maritim regional seperti ASEAN Maritime
+        Forum, dan menjadi tuan rumah berbagai latihan militer gabungan bersama negara sahabat.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PETA ============ -->
+<section class="block" id="peta">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Eksplorasi</div>
+    <h2>Peta Wilayah Indonesia</h2>
+    <p>Peta 38 provinsi Indonesia beserta nomor penanda wilayah. Klik peta untuk memperbesar, atau klik nomor pada daftar keterangan.</p>
+  </div>
+
+  <div class="map-wrap reveal">
+    <figure class="map-figure" id="mapFigure" role="button" tabindex="0"
+            aria-label="Peta wilayah Indonesia, klik untuk memperbesar">
+      <img class="map-img" id="mapImg"
+           src="peta-provinsi-indonesia.png"
+           alt="Peta 38 provinsi Indonesia dengan penanda nomor 1 sampai 38 beserta keterangan nama provinsi">
+      <figcaption class="map-zoom-hint">🔍 Klik untuk memperbesar</figcaption>
+    </figure>
+
+    <div class="map-legend" id="mapLegend" aria-label="Keterangan nomor provinsi"></div>
+
+    <p class="map-hint">
+      💡 Angka 1–38 pada peta sesuai dengan daftar <b>Keterangan</b> di atas. Klik salah satu
+      nomor untuk menampilkan nama provinsi dan wilayahnya.
+    </p>
+  </div>
+</section>
+
+<!-- ============ PROVINSI ============ -->
+<section class="block" id="provinsi">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 06</div>
+    <h2>38 Provinsi dalam Bingkai NKRI</h2>
+    <p>Indonesia terbagi menjadi 38 provinsi yang tersebar dari Aceh hingga Papua. Gunakan pencarian & filter di bawah.</p>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:26px">
+    <div class="ic">🏙️</div>
+    <h3>Pembagian Wilayah Administratif</h3>
+    <p>
+      Wilayah NKRI dibagi menjadi beberapa tingkatan pemerintahan: <strong>provinsi</strong>,
+      <strong>kabupaten/kota</strong>, <strong>kecamatan</strong>, dan <strong>desa/kelurahan</strong>.
+      Setiap provinsi dipimpin oleh gubernur, kabupaten oleh bupati, dan kota oleh wali kota.
+      Pembagian ini bertujuan agar pelayanan publik dan pembangunan lebih merata hingga ke
+      pelosok negeri.
+    </p>
+    <p>
+      Beberapa provinsi memiliki status khusus: <strong>Daerah Istimewa Yogyakarta</strong> (dipimpin
+      Sultan), <strong>Nanggroe Aceh Darussalam</strong> (dengan syariat Islam), <strong>Papua</strong>
+      dan <strong>Papua Barat</strong> (dengan otonomi khusus), serta <strong>DKI Jakarta</strong>
+      sebagai daerah khusus ibu kota negara (sebelum pindah ke IKN Nusantara).
+    </p>
+    <p>
+      Sejak reformasi 1998, terjadi pemekaran wilayah yang signifikan. Dari 26 provinsi pada
+      1998 menjadi 38 provinsi pada 2022. Tujuan pemekaran adalah mempercepat pembangunan,
+      mendekatkan pelayanan publik, dan meningkatkan kesejahteraan masyarakat di daerah.
+    </p>
+  </div>
+
+  <div class="prov-controls reveal">
+    <input type="text" class="prov-search" id="provSearch" placeholder="🔍 Cari provinsi... (mis. Jawa, Papua)">
+    <select class="prov-filter" id="provFilter">
+      <option value="">Semua Wilayah</option>
+      <option value="Sumatera">Sumatera</option>
+      <option value="Jawa">Jawa</option>
+      <option value="Kalimantan">Kalimantan</option>
+      <option value="Sulawesi">Sulawesi</option>
+      <option value="Bali & Nusa">Bali & Nusa Tenggara</option>
+      <option value="Maluku">Maluku</option>
+      <option value="Papua">Papua</option>
+    </select>
+  </div>
+  <p class="prov-count" id="provCount" style="text-align:center"></p>
+  <div class="prov-grid reveal" id="provGrid"></div>
+
+  <p style="text-align:center;color:var(--muted);font-size:13.4px;margin-top:22px">
+    *Jumlah provinsi di Indonesia kini 38 setelah pemekaran wilayah Papua pada tahun 2022.
+  </p>
+</section>
+
+<!-- ============ GLOSARIUM ============ -->
+<section class="block" id="glosarium">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Kamus</div>
+    <h2>Glosarium Istilah NKRI</h2>
+    <p>Kumpulan istilah penting yang perlu kamu kuasai saat mempelajari wilayah NKRI.</p>
+  </div>
+
+  <div class="glos-grid reveal" id="glosGrid"></div>
+</section>
+
+<!-- ============ FLASHCARD ============ -->
+<section class="block" id="flashcard">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Belajar Kilat</div>
+    <h2>Flashcard Interaktif</h2>
+    <p>Klik kartu untuk membalik dan melihat jawaban. Gunakan tombol navigasi untuk berpindah kartu.</p>
+  </div>
+
+  <div class="fc-wrap reveal">
+    <div class="fc" id="fcCard" role="button" tabindex="0" aria-label="Flashcard, klik untuk membalik">
+      <div class="fc-inner">
+        <div class="fc-face fc-front">
+          <div class="fc-cat" id="fcCat">ISTILAH</div>
+          <h3 id="fcQuestion">Memuat...</h3>
+          <small>👆 Klik kartu untuk lihat jawaban</small>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-back-label">✅ Jawaban</div>
+          <p id="fcAnswer"></p>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button id="fcPrev">← Sebelumnya</button>
+      <span class="fc-counter" id="fcCounter">1 / 15</span>
+      <button id="fcNext">Selanjutnya →</button>
+      <button id="fcShuffle">🔀 Acak</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WAWASAN NUSANTARA ============ -->
+<section class="block" id="wawasan">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 07</div>
+    <h2>Wawasan Nusantara</h2>
+    <p>Cara pandang bangsa Indonesia terhadap diri dan wilayahnya sebagai satu kesatuan.</p>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:26px">
+    <div class="card reveal">
+      <div class="ic">🧭</div>
+      <h3>Pengertian</h3>
+      <p>
+        <strong>Wawasan Nusantara</strong> adalah cara pandang dan sikap bangsa Indonesia mengenai
+        diri dan lingkungannya yang mengutamakan persatuan dan kesatuan bangsa serta kesatuan
+        wilayah dalam penyelenggaraan kehidupan bermasyarakat, berbangsa, dan bernegara.
+      </p>
+      <p>
+        Secara etimologis, <em>wawasan</em> berarti cara pandang atau tinjauan, sedangkan
+        <em>nusantara</em> berarti kepulauan Indonesia. Jadi, Wawasan Nusantara adalah cara
+        pandang bangsa Indonesia tentang diri dan tanah airnya sebagai negara kepulauan yang
+        majemuk namun tetap satu.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🎯</div>
+      <h3>Tujuan & Fungsi</h3>
+      <p>
+        Tujuan Wawasan Nusantara adalah mewujudkan <strong>nasionalisme</strong> yang tinggi dalam
+        segala aspek kehidupan, menjaga keutuhan NKRI, serta menjamin kepentingan nasional di
+        tengah pergaulan internasional.
+      </p>
+      <p>
+        Fungsi Wawasan Nusantara antara lain: sebagai pedoman dalam pembangunan nasional,
+        sebagai landasan kebijakan pertahanan-keamanan, sebagai perekat persatuan bangsa, dan
+        sebagai rambu-rambu dalam hubungan internasional.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card reveal">
+      <div class="ic">🌏</div>
+      <h3>Kesatuan Wilayah</h3>
+      <p>
+        Darat, laut, dan udara Indonesia merupakan satu kesatuan yang tidak terpisahkan. Laut
+        bukan pemisah pulau, melainkan penghubung yang mempersatukan bangsa.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🤝</div>
+      <h3>Kesatuan Bangsa</h3>
+      <p>
+        Seluruh suku, agama, ras, dan golongan di Indonesia bersatu dalam satu identitas:
+        <strong>Bangsa Indonesia</strong>. Perbedaan adalah kekayaan, bukan perpecahan.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">📈</div>
+      <h3>Kesatuan Ekonomi & Sosial</h3>
+      <p>
+        Pembangunan harus merata hingga ke seluruh pelosok negeri. Tidak boleh ada daerah yang
+        tertinggal, karena kemajuan satu daerah adalah kemajuan seluruh bangsa.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🕊️</div>
+      <h3>Kesatuan Ideologi</h3>
+      <p>
+        Pancasila sebagai dasar negara dan pandangan hidup bangsa menjadi perekat ideologis
+        yang menyatukan seluruh rakyat Indonesia dari berbagai latar belakang.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🛡️</div>
+      <h3>Kesatuan Pertahanan</h3>
+      <p>
+        Sistem pertahanan Indonesia bersifat semesta (sishankamrata) — melibatkan seluruh
+        rakyat, wilayah, dan sumber daya nasional untuk menjaga kedaulatan NKRI.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">📚</div>
+      <h3>Kesatuan Sosial-Budaya</h3>
+      <p>
+        Kebinekaan budaya Indonesia adalah kekayaan yang harus dijaga. Bahasa Indonesia menjadi
+        bahasa persatuan yang mempersatukan ratusan bahasa daerah.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANCAMAN ============ -->
+<section class="block" id="ancaman">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 08</div>
+    <h2>Ancaman & Tantangan NKRI</h2>
+    <p>Menjaga keutuhan NKRI bukan perkara mudah. Berbagai tantangan terus mengintai dari dalam dan luar negeri.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card reveal">
+      <div class="ic">⚔️</div>
+      <h3>Ancaman Militer</h3>
+      <p>
+        Ancaman militer adalah ancaman yang menggunakan kekuatan bersenjata dan membahayakan
+        kedaulatan, keutuhan wilayah, serta keselamatan bangsa. Bentuknya meliputi:
+      </p>
+      <ul>
+        <li><strong>Agresi</strong> — serangan bersenjata oleh negara lain.</li>
+        <li><strong>Spionase</strong> — penyusupan untuk mencuri informasi rahasia negara.</li>
+        <li><strong>Sabotase</strong> — perusakan instalasi penting negara.</li>
+        <li><strong>Terorisme</strong> — aksi kekerasan untuk menciptakan ketakutan massal.</li>
+        <li><strong>Pelanggaran wilayah</strong> — masuknya kapal/pesawat asing tanpa izin.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🧨</div>
+      <h3>Ancaman Non-Militer</h3>
+      <p>
+        Ancaman non-militer bersifat tidak menggunakan senjata, namun dapat melemahkan bangsa
+        dari dalam. Contohnya:
+      </p>
+      <ul>
+        <li><strong>Radikalisme & Terorisme</strong> — paham yang bertentangan dengan Pancasila.</li>
+        <li><strong>Separatisme</strong> — gerakan memisahkan diri dari NKRI.</li>
+        <li><strong>Hoaks & Disinformasi</strong> — berita palsu yang memecah belah.</li>
+        <li><strong>Narkoba</strong> — merusak generasi muda bangsa.</li>
+        <li><strong>Korupsi</strong> — melemahkan ekonomi dan kepercayaan publik.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <div class="ic">💻</div>
+      <h3>Ancaman Siber</h3>
+      <p>
+        Di era digital, ancaman siber menjadi salah satu yang paling serius. Bentuknya antara lain:
+      </p>
+      <ul>
+        <li><strong>Hacking</strong> — peretasan sistem pemerintah dan lembaga penting.</li>
+        <li><strong>Pencurian data</strong> — data pribadi warga negara dijual di pasar gelap.</li>
+        <li><strong>Propaganda digital</strong> — penyebaran narasi yang memecah belah melalui media sosial.</li>
+        <li><strong>Serangan ransomware</strong> — penguncian data dengan tuntutan tebusan.</li>
+      </ul>
+      <p>
+        Untuk menghadapinya, Indonesia memiliki <strong>BSSN</strong> (Badan Siber dan Sandi
+        Negara) yang bertugas menjaga keamanan siber nasional.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🌐</div>
+      <h3>Ancaman Ideologi & Globalisasi</h3>
+      <p>
+        Globalisasi membawa nilai-nilai baru yang belum tentu cocok dengan budaya Indonesia.
+        Tantangan ideologis antara lain:
+      </p>
+      <ul>
+        <li><strong>Individualisme</strong> — mengikis semangat gotong royong.</li>
+        <li><strong>Konsumerisme</strong> — pola hidup boros yang tidak sesuai budaya.</li>
+        <li><strong>Paham transnasional</strong> — ideologi yang bertentangan dengan Pancasila.</li>
+        <li><strong>Hedonisme</strong> — gaya hidup berlebihan yang mengabaikan nilai moral.</li>
+      </ul>
+      <p>
+        Pancasila sebagai filter ideologi harus terus ditanamkan sejak dini agar generasi muda
+        tidak mudah terpengaruh.
+      </p>
+    </div>
+    <div class="card reveal" style="grid-column:1/-1">
+      <div class="ic">💪</div>
+      <h3>Peran Pelajar dalam Menjaga NKRI</h3>
+      <p>
+        Pelajar adalah generasi penerus bangsa. Peran nyata yang bisa dilakukan untuk menjaga
+        keutuhan NKRI antara lain:
+      </p>
+      <div class="grid grid-2" style="gap:14px;margin-top:14px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Belajar dengan Tekun</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Prestasi akademik adalah bentuk bela negara di era modern. Generasi cerdas = bangsa kuat.
+          </p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Cinta Produk Dalam Negeri</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Menggunakan produk lokal membantu ekonomi bangsa dan memperkuat kemandirian nasional.
+          </p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Jaga Toleransi</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Menghormati perbedaan suku, agama, dan budaya adalah wujud nyata persatuan.
+          </p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Bijak Bermedia Sosial</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Tidak menyebarkan hoaks, tidak ikut ujaran kebencian, dan selalu verifikasi informasi.
+          </p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Ikut Kegiatan Positif</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Aktif di organisasi, kegiatan sosial, atau komunitas yang membangun karakter.
+          </p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
+          <strong style="color:var(--accent)">Jaga Lingkungan</strong>
+          <p style="font-size:14px;color:var(--muted);margin-top:6px">
+            Menjaga alam Indonesia adalah bentuk syukur dan tanggung jawab terhadap generasi mendatang.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GLOBALISASI ============ -->
+<section class="block" id="globalisasi">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Bagian 09</div>
+    <h2>NKRI di Era Globalisasi</h2>
+    <p>Bagaimana Indonesia menjaga kedaulatan dan identitasnya di tengah arus globalisasi.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card reveal">
+      <div class="ic">🌐</div>
+      <h3>Peluang Globalisasi</h3>
+      <p>
+        Globalisasi membuka peluang besar bagi Indonesia untuk berkembang. Beberapa peluang
+        yang bisa dimanfaatkan antara lain:
+      </p>
+      <ul>
+        <li><strong>Pasar global</strong> — produk Indonesia dapat dijual ke seluruh dunia.</li>
+        <li><strong>Teknologi</strong> — transfer ilmu pengetahuan dan inovasi dari negara maju.</li>
+        <li><strong>Investasi asing</strong> — masuknya modal untuk pembangunan infrastruktur.</li>
+        <li><strong>Kerja sama internasional</strong> — diplomasi politik, ekonomi, dan budaya.</li>
+        <li><strong>Pariwisata</strong> — keindahan Indonesia dikenal hingga mancanegara.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <div class="ic">⚠️</div>
+      <h3>Tantangan Globalisasi</h3>
+      <p>
+        Namun, globalisasi juga membawa tantangan yang harus diwaspadai:
+      </p>
+      <ul>
+        <li><strong>Persaingan ekonomi</strong> — produk lokal bersaing dengan produk asing murah.</li>
+        <li><strong>Budaya asing</strong> — gaya hidup barat yang belum tentu sesuai budaya Indonesia.</li>
+        <li><strong>Ketergantungan teknologi</strong> — jika tidak dikelola, bisa merugikan.</li>
+        <li><strong>Ancaman siber</strong> — serangan dari luar yang mengganggu stabilitas.</li>
+        <li><strong>Kesenjangan</strong> — daerah yang tertinggal makin jauh dari yang maju.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🚀</div>
+      <h3>Strategi Menghadapi Globalisasi</h3>
+      <p>
+        Indonesia memiliki beberapa strategi untuk menghadapi globalisasi tanpa kehilangan
+        identitas dan kedaulatan:
+      </p>
+      <ul>
+        <li><strong>Penguatan SDM</strong> — pendidikan berkualitas untuk generasi muda.</li>
+        <li><strong>Inovasi teknologi</strong> — mengembangkan teknologi dalam negeri.</li>
+        <li><strong>Diplomasi aktif</strong> — peran Indonesia di ASEAN, G20, dan PBB.</li>
+        <li><strong>Pelestarian budaya</strong> — menjaga warisan budaya sebagai identitas bangsa.</li>
+        <li><strong>Kemandirian ekonomi</strong> — mengurangi ketergantungan impor.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <div class="ic">🇮🇩</div>
+      <h3>Komitmen Menjaga NKRI</h3>
+      <p>
+        Di tengah derasnya arus globalisasi, komitmen menjaga NKRI harus terus dipupuk.
+        Nilai-nilai Pancasila, UUD 1945, Bhinneka Tunggal Ika, dan NKRI (empat pilar
+        kebangsaan) menjadi pedoman bersama.
+      </p>
+      <p>
+        Setiap warga negara memiliki tanggung jawab untuk menjaga keutuhan NKRI sesuai
+        perannya masing-masing: pelajar dengan belajar tekun, guru dengan mendidik, aparat
+        dengan menjaga keamanan, dan seluruh rakyat dengan mencintai tanah air.
+      </p>
+      <p>
+        Selama kita bersatu, Indonesia akan tetap kokoh menghadapi berbagai tantangan zaman.
+        <strong>Merdeka!</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KUIS ============ -->
+<section class="block" id="kuis">
+  <div class="sec-head reveal">
+    <div class="sec-tag">Uji Pemahaman</div>
+    <h2>Kuis Interaktif NKRI</h2>
+    <p>Jawab 15 pertanyaan berikut untuk mengukur pemahamanmu tentang wilayah NKRI.</p>
+  </div>
+
+  <div class="quiz-box reveal" id="quizBox">
+    <div id="quizMain">
+      <div class="quiz-top">
+        <span class="q-counter" id="qCounter">PERTANYAAN 1 / 15</span>
+        <span class="q-score" id="qScore">⭐ Skor: 0</span>
+      </div>
+      <div class="q-bar"><i id="qBar"></i></div>
+      <div class="q-text" id="qText">Memuat pertanyaan...</div>
+      <div class="q-options" id="qOptions"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="nextBtn" style="display:none">Lanjut ➜</button>
+      </div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="emoji" id="resEmoji">🏆</div>
+      <h3 id="resTitle">Selamat!</h3>
+      <div class="final" id="resScore">0 / 15</div>
+      <p id="resDesc">Kamu telah menyelesaikan kuis. Teruslah belajar tentang NKRI!</p>
+      <div class="badges" id="badges">
+        <div class="badge-item" data-badge="starter"><div class="bi">🎯</div><div class="bl">Pemula</div></div>
+        <div class="badge-item" data-badge="silver"><div class="bi">🥈</div><div class="bl">Perak</div></div>
+        <div class="badge-item" data-badge="gold"><div class="bi">🥇</div><div class="bl">Emas</div></div>
+        <div class="badge-item" data-badge="master"><div class="bi">👑</div><div class="bl">Master</div></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" id="retryBtn">🔄 Ulangi Kuis</button>
+        <a href="#pengertian" class="btn btn-ghost">📚 Baca Ulang Materi</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="fbrand">🇮🇩 <span>NKRI Explorer</span></div>
+  <p>Media pembelajaran interaktif tentang Wilayah Negara Kesatuan Republik Indonesia.</p>
+  <p style="margin-top:8px">Dibuat untuk siswa, guru, dan siapa pun yang cinta Indonesia.</p>
+  <p class="small">© 2024 NKRI Explorer • Merdeka! • Dari Sabang sampai Merauke 🇮🇩</p>
+</footer>
+
+<div id="toast">✅ <span id="toastMsg">Berhasil!</span></div>
+
+<!-- Map Lightbox -->
+<div class="map-lightbox" id="mapLightbox" role="dialog" aria-modal="true" aria-label="Peta Indonesia diperbesar">
+  <button class="lb-close" id="lbClose" aria-label="Tutup peta">✕</button>
+  <img id="lbImg" src="" alt="Peta wilayah Indonesia diperbesar">
+</div>
+
+<!-- Floating TOC -->
+<button class="toc-fab" id="tocFab" title="Daftar Isi">☰</button>
+<div class="toc-panel" id="tocPanel">
+  <h4>Daftar Isi</h4>
+  <a href="#pengertian"><span class="tnum">01</span>Pengertian NKRI</a>
+  <a href="#sejarah"><span class="tnum">02</span>Sejarah NKRI</a>
+  <a href="#wilayah"><span class="tnum">03</span>Wilayah NKRI</a>
+  <a href="#batas"><span class="tnum">04</span>Batas Wilayah</a>
+  <a href="#laut"><span class="tnum">05</span>Laut & ZEE</a>
+  <a href="#peta"><span class="tnum">06</span>Peta Indonesia</a>
+  <a href="#provinsi"><span class="tnum">07</span>38 Provinsi</a>
+  <a href="#glosarium"><span class="tnum">08</span>Glosarium</a>
+  <a href="#flashcard"><span class="tnum">09</span>Flashcard</a>
+  <a href="#wawasan"><span class="tnum">10</span>Wawasan Nusantara</a>
+  <a href="#ancaman"><span class="tnum">11</span>Ancaman NKRI</a>
+  <a href="#globalisasi"><span class="tnum">12</span>Globalisasi</a>
+  <a href="#kuis"><span class="tnum">13</span>Kuis Interaktif</a>
+</div>
+
+<script>
+/* ============================================================
+   1. THEME & SOUND
+============================================================ */
+const themeBtn = document.getElementById('themeBtn');
+const soundBtn = document.getElementById('soundBtn');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('nkri-theme') || 'dark';
+root.setAttribute('data-theme', savedTheme);
+themeBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+let soundOn = localStorage.getItem('nkri-sound') !== 'off';
+soundBtn.textContent = soundOn ? '🔊' : '🔇';
+
+themeBtn.addEventListener('click', () => {
+  const cur = root.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('nkri-theme', next);
+});
+
+soundBtn.addEventListener('click', () => {
+  soundOn = !soundOn;
+  soundBtn.textContent = soundOn ? '🔊' : '🔇';
+  localStorage.setItem('nkri-sound', soundOn ? 'on' : 'off');
+  showToast(soundOn ? '🔊 Suara aktif' : '🔇 Suara dibisukan');
+});
+
+/* Simple sound using Web Audio API (no external files) */
+function playTone(freq, dur, type) {
+  if (!soundOn) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + dur);
+  } catch(e){}
+}
+const sfx = {
+  click: () => playTone(600, .08, 'sine'),
+  correct: () => { playTone(700, .1); setTimeout(()=>playTone(1000, .15), 100); },
+  wrong: () => playTone(220, .25, 'sawtooth'),
+  success: () => { [500, 700, 900, 1200].forEach((f,i)=>setTimeout(()=>playTone(f, .15), i*100)); }
+};
+
+/* ============================================================
+   2. MOBILE MENU
+============================================================ */
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => navLinks.classList.remove('open'))
+);
+
+/* ============================================================
+   3. PROGRESS BAR + ACTIVE NAV + TOC
+============================================================ */
+const progressBar = document.getElementById('progressBar');
+const sections = document.querySelectorAll('section.block, .hero');
+const navAs = document.querySelectorAll('.nav-a');
+const tocAs = document.querySelectorAll('.toc-panel a');
+
+function onScroll() {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  progressBar.style.width = pct + '%';
+
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 120;
+    if (window.scrollY >= top) current = sec.id;
+  });
+  navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  tocAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+
+  // Mark section read
+  if (current) markRead(current);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* ============================================================
+   4. REVEAL ON SCROLL
+============================================================ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 70 + 'ms';
+  io.observe(el);
+});
+
+/* ============================================================
+   5. READING PROGRESS TRACKER
+============================================================ */
+const readSections = ['pengertian','sejarah','wilayah','batas','laut','peta','provinsi','glosarium','flashcard','wawasan','ancaman','globalisasi','kuis'];
+const readTracker = JSON.parse(localStorage.getItem('nkri-read') || '[]');
+function markRead(id) {
+  if (!readSections.includes(id)) return;
+  if (!readTracker.includes(id)) {
+    readTracker.push(id);
+    localStorage.setItem('nkri-read', JSON.stringify(readTracker));
+  }
+}
+
+/* ============================================================
+   6. ACCORDION
+============================================================ */
+document.querySelectorAll('.acc-head').forEach(btn => {
+  btn.addEventListener('click', () => {
+    sfx.click();
+    const item = btn.parentElement;
+    const body = item.querySelector('.acc-body');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.acc-item').forEach(it => {
+      it.classList.remove('open');
+      it.querySelector('.acc-body').style.maxHeight = null;
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+window.addEventListener('load', () => {
+  const first = document.querySelector('.acc-item');
+  if (first) {
+    first.classList.add('open');
+    const b = first.querySelector('.acc-body');
+    b.style.maxHeight = b.scrollHeight + 'px';
+  }
+  updateProvCount();
+});
+
+/* ============================================================
+   7. FLIP CARDS (Batas Wilayah)
+============================================================ */
+document.querySelectorAll('.flip').forEach(f => {
+  f.addEventListener('click', () => { sfx.click(); f.classList.toggle('flipped'); });
+});
+
+/* ============================================================
+   8. EXPANDABLE TIMELINE
+============================================================ */
+document.querySelectorAll('.tl-item').forEach(item => {
+  item.addEventListener('click', () => {
+    sfx.click();
+    item.classList.toggle('open');
+  });
+});
+
+/* ============================================================
+   9. PROVINSI GRID + SEARCH + FILTER
+============================================================ */
+const provinsiData = [
+  {n:"Aceh",r:"Sumatera"},{n:"Sumatera Utara",r:"Sumatera"},{n:"Sumatera Barat",r:"Sumatera"},
+  {n:"Riau",r:"Sumatera"},{n:"Kepulauan Riau",r:"Sumatera"},{n:"Jambi",r:"Sumatera"},
+  {n:"Bengkulu",r:"Sumatera"},{n:"Sumatera Selatan",r:"Sumatera"},{n:"Kepulauan Bangka Belitung",r:"Sumatera"},
+  {n:"Lampung",r:"Sumatera"},{n:"Banten",r:"Jawa"},{n:"DKI Jakarta",r:"Jawa"},
+  {n:"Jawa Barat",r:"Jawa"},{n:"Jawa Tengah",r:"Jawa"},{n:"DI Yogyakarta",r:"Jawa"},
+  {n:"Jawa Timur",r:"Jawa"},{n:"Bali",r:"Bali & Nusa"},{n:"Nusa Tenggara Barat",r:"Bali & Nusa"},
+  {n:"Nusa Tenggara Timur",r:"Bali & Nusa"},{n:"Kalimantan Barat",r:"Kalimantan"},
+  {n:"Kalimantan Tengah",r:"Kalimantan"},{n:"Kalimantan Selatan",r:"Kalimantan"},
+  {n:"Kalimantan Timur",r:"Kalimantan"},{n:"Kalimantan Utara",r:"Kalimantan"},
+  {n:"Sulawesi Utara",r:"Sulawesi"},{n:"Gorontalo",r:"Sulawesi"},{n:"Sulawesi Tengah",r:"Sulawesi"},
+  {n:"Sulawesi Barat",r:"Sulawesi"},{n:"Sulawesi Selatan",r:"Sulawesi"},{n:"Sulawesi Tenggara",r:"Sulawesi"},
+  {n:"Maluku",r:"Maluku"},{n:"Maluku Utara",r:"Maluku"},{n:"Papua",r:"Papua"},
+  {n:"Papua Barat",r:"Papua"},{n:"Papua Selatan",r:"Papua"},{n:"Papua Tengah",r:"Papua"},
+  {n:"Papua Pegunungan",r:"Papua"},{n:"Papua Barat Daya",r:"Papua"}
+];
+const provGrid = document.getElementById('provGrid');
+const provSearch = document.getElementById('provSearch');
+const provFilter = document.getElementById('provFilter');
+const provCount = document.getElementById('provCount');
+
+function renderProv() {
+  const q = provSearch.value.toLowerCase().trim();
+  const f = provFilter.value;
+  const filtered = provinsiData.filter(p =>
+    (!q || p.n.toLowerCase().includes(q)) && (!f || p.r === f)
+  );
+  provGrid.innerHTML = filtered.length
+    ? filtered.map(p => `<div class="prov" title="Wilayah: ${p.r}"><span class="flagdot"></span>${p.n}</div>`).join('')
+    : `<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px">Tidak ada provinsi yang cocok.</p>`;
+  provCount.textContent = `Menampilkan ${filtered.length} dari ${provinsiData.length} provinsi`;
+}
+function updateProvCount() { renderProv(); }
+provSearch.addEventListener('input', renderProv);
+provFilter.addEventListener('change', renderProv);
+
+/* ============================================================
+   10. GLOSARIUM
+============================================================ */
+const glosarium = [
+  {t:"NKRI", d:"Negara Kesatuan Republik Indonesia — negara berdaulat berbentuk kesatuan dengan pemerintahan republik, di mana seluruh wilayah merupakan satu kesatuan yang tidak terpisahkan."},
+  {t:"Archipelagic State", d:"Negara kepulauan. Status hukum internasional yang mengakui suatu negara terdiri dari gugusan pulau dengan laut di antaranya sebagai satu kesatuan wilayah."},
+  {t:"Deklarasi Djuanda", d:"Deklarasi 13 Desember 1957 oleh PM Djuanda Kartawidjaja yang menyatakan bahwa laut antarpulau Indonesia adalah satu kesatuan wilayah NKRI."},
+  {t:"UNCLOS 1982", d:"United Nations Convention on the Law of the Sea — konvensi hukum laut PBB yang mengakui prinsip negara kepulauan. Diratifikasi Indonesia melalui UU No. 17/1985."},
+  {t:"ZEE", d:"Zona Ekonomi Eksklusif — zona laut selebar 200 mil laut dari garis pangkal, di mana negara berhak eksklusif mengelola sumber daya alam."},
+  {t:"Laut Teritorial", d:"Zona laut selebar 12 mil laut dari garis pangkal, di mana negara memiliki kedaulatan penuh."},
+  {t:"Zona Tambahan", d:"Zona laut 24 mil laut dari garis pangkal untuk pengawasan imigrasi, bea cukai, fiskal, dan karantina."},
+  {t:"Landas Kontinen", d:"Dasar laut dan tanah di bawahnya yang merupakan lanjutan alami daratan hingga tepi luar margin kontinen, atau hingga 200 mil laut."},
+  {t:"Garis Pangkal", d:"Garis yang menghubungkan titik-titik terluar pulau terluar suatu negara, menjadi acuan pengukuran lebar laut teritorial dan ZEE."},
+  {t:"ALKI", d:"Alur Laut Kepulauan Indonesia — jalur pelayaran internasional yang diakui melalui perairan Indonesia. Terdiri dari ALKI I, II, dan III."},
+  {t:"Wawasan Nusantara", d:"Cara pandang bangsa Indonesia terhadap diri dan wilayahnya sebagai satu kesatuan yang utuh dan menyeluruh."},
+  {t:"Ekstrateritorial", d:"Wilayah yang secara hukum dianggap wilayah suatu negara meskipun berada di luar batas geografisnya, seperti kedutaan dan kapal berbendera."},
+  {t:"Otonomi Daerah", d:"Kewenangan daerah otonom untuk mengatur dan mengurus kepentingan masyarakat setempat menurut prakarsa sendiri dalam kerangka NKRI."},
+  {t:"Desentralisasi", d:"Penyerahan kewenangan pemerintahan dari pemerintah pusat kepada daerah otonom untuk mengurus urusan tertentu."},
+  {t:"Sishankamrata", d:"Sistem Pertahanan Keamanan Rakyat Semesta — sistem pertahanan Indonesia yang melibatkan seluruh rakyat, wilayah, dan sumber daya nasional."}
+];
+const glosGrid = document.getElementById('glosGrid');
+glosGrid.innerHTML = glosarium.map(g =>
+  `<div class="glos"><h4>${g.t}</h4><p>${g.d}</p></div>`
+).join('');
+
+/* ============================================================
+   11. FLASHCARD  (FIXED: id unik "fcCard")
+============================================================ */
+const fcData = [
+  {c:"Dasar Hukum", q:"Pasal berapa dalam UUD 1945 yang menyatakan NKRI sebagai negara kesatuan berbentuk republik?", a:"<strong>Pasal 1 ayat (1) UUD 1945</strong>: \"Negara Indonesia ialah Negara Kesatuan, yang berbentuk Republik.\""},
+  {c:"Sejarah", q:"Kapan Sumpah Pemuda diikrarkan dan apa maknanya bagi NKRI?", a:"<strong>28 Oktober 1928</strong> dalam Kongres Pemuda II. Maknanya: ikrar satu tanah air, satu bangsa, satu bahasa — menjadi fondasi ideologis NKRI."},
+  {c:"Laut", q:"Apa isi Deklarasi Djuanda dan mengapa penting?", a:"Dideklarasikan <strong>13 Desember 1957</strong>. Isinya: laut antarpulau Indonesia adalah satu kesatuan wilayah NKRI. Penting karena menjadi dasar perjuangan Indonesia di UNCLOS 1982."},
+  {c:"Laut", q:"Berapa lebar ZEE dan apa hak Indonesia di sana?", a:"<strong>200 mil laut</strong> dari garis pangkal. Indonesia berhak eksklusif mengelola sumber daya alam hayati dan non-hayati di zona tersebut."},
+  {c:"Batas", q:"Sebutkan empat titik ekstrem NKRI!", a:"Utara: <strong>Pulau Miangas</strong> (Sulut) • Selatan: <strong>Pulau Rote</strong> (NTT) • Barat: <strong>Pulau Rondo</strong> (Aceh) • Timur: <strong>Pulau Merauke</strong> (Papua)."},
+  {c:"Provinsi", q:"Berapa jumlah provinsi di Indonesia saat ini?", a:"<strong>38 provinsi</strong> setelah pemekaran wilayah Papua pada 2022 (Papua Selatan, Papua Tengah, Papua Pegunungan, Papua Barat Daya)."},
+  {c:"Wilayah", q:"Apa yang dimaksud wilayah ekstrateritorial?", a:"Wilayah yang secara hukum dianggap wilayah Indonesia meskipun berada di luar batas geografis, seperti <strong>kedutaan, kapal berbendera, dan pesawat</strong>."},
+  {c:"Hukum Laut", q:"Apa itu ALKI dan berapa jumlahnya?", a:"<strong>Alur Laut Kepulauan Indonesia</strong> — jalur pelayaran internasional melalui perairan Indonesia. Ada <strong>3 ALKI</strong>: ALKI I (Selat Malaka–Sunda), ALKI II (Lombok–Makassar), ALKI III (Sawu–Ombai–Banda)."},
+  {c:"Wawasan", q:"Apa itu Wawasan Nusantara?", a:"<strong>Cara pandang bangsa Indonesia</strong> terhadap diri dan wilayahnya sebagai satu kesatuan yang utuh dan menyeluruh, mencakup aspek wilayah, bangsa, ideologi, politik, sosial-budaya, ekonomi, dan pertahanan."},
+  {c:"Wilayah Udara", q:"Sampai ketinggian berapa wilayah udara suatu negara diakui?", a:"Hingga sekitar <strong>110 km</strong> di atas permukaan laut. Di atasnya disebut <strong>ruang angkasa (outer space)</strong> yang tidak dapat diklaim kedaulatannya."},
+  {c:"Sejarah", q:"Kapan Indonesia kembali ke bentuk NKRI setelah RIS?", a:"<strong>17 Agustus 1950</strong>. RIS dibubarkan dan Indonesia kembali menjadi Negara Kesatuan Republik Indonesia dengan UUD Sementara 1950."},
+  {c:"Batas", q:"Negara mana saja yang berbatasan darat dengan Indonesia?", a:"<strong>Malaysia</strong> (Sabah & Sarawak di Kalimantan), <strong>Papua Nugini</strong> (Papua), dan <strong>Timor Leste</strong> (NTT)."},
+  {c:"Laut", q:"Apa itu garis pangkal dan mengapa penting?", a:"Garis yang menghubungkan titik-titik terluar pulau terluar. Menjadi <strong>acuan pengukuran</strong> lebar laut teritorial (12 mil), zona tambahan (24 mil), dan ZEE (200 mil)."},
+  {c:"Pemerintahan", q:"Apa itu otonomi daerah?", a:"Kewenangan daerah otonom untuk <strong>mengatur dan mengurus</strong> kepentingan masyarakat setempat menurut prakarsa sendiri dalam kerangka NKRI."},
+  {c:"Ideologi", q:"Sebutkan empat pilar kebangsaan Indonesia!", a:"<strong>Pancasila, UUD 1945, Bhinneka Tunggal Ika, dan NKRI</strong>. Keempatnya menjadi pedoman bersama menjaga keutuhan bangsa."}
+];
+let fcIndex = 0, fcOrder = [...Array(fcData.length).keys()];
+
+const fcEl       = document.getElementById('fcCard');   // ← ID unik, bukan "flashcard"
+const fcCat      = document.getElementById('fcCat');
+const fcQ        = document.getElementById('fcQuestion');
+const fcA        = document.getElementById('fcAnswer');
+const fcCounter  = document.getElementById('fcCounter');
+
+function renderFC() {
+  const item = fcData[fcOrder[fcIndex]];
+  fcCat.textContent = item.c;
+  fcQ.textContent   = item.q;
+  fcA.innerHTML     = item.a;
+  fcCounter.textContent = `${fcIndex + 1} / ${fcData.length}`;
+  fcEl.classList.remove('flipped');   // selalu mulai dari sisi pertanyaan
+}
+
+/* Klik kartu → balik & tampilkan jawaban */
+fcEl.addEventListener('click', () => {
+  sfx.click();
+  fcEl.classList.toggle('flipped');
+});
+
+/* Dukungan keyboard (Enter / Spasi) */
+fcEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sfx.click();
+    fcEl.classList.toggle('flipped');
+  }
+});
+
+document.getElementById('fcNext').addEventListener('click', (e) => {
+  e.stopPropagation();
+  sfx.click();
+  fcIndex = (fcIndex + 1) % fcData.length;
+  renderFC();
+});
+document.getElementById('fcPrev').addEventListener('click', (e) => {
+  e.stopPropagation();
+  sfx.click();
+  fcIndex = (fcIndex - 1 + fcData.length) % fcData.length;
+  renderFC();
+});
+document.getElementById('fcShuffle').addEventListener('click', (e) => {
+  e.stopPropagation();
+  sfx.click();
+  fcOrder = fcOrder.sort(() => Math.random() - 0.5);
+  fcIndex = 0;
+  renderFC();
+  showToast('🔀 Kartu diacak!');
+});
+renderFC();
+
+/* ============================================================
+   12. PETA — gambar PNG + legend + lightbox
+============================================================ */
+/* Nomor mengikuti keterangan pada gambar peta (1–38) */
+const petaProvinsi = [
+  {no:1,  n:"Aceh",                       r:"Sumatera"},
+  {no:2,  n:"Sumatera Utara",             r:"Sumatera"},
+  {no:3,  n:"Sumatera Barat",             r:"Sumatera"},
+  {no:4,  n:"Riau",                       r:"Sumatera"},
+  {no:5,  n:"Kep. Riau",                  r:"Sumatera"},
+  {no:6,  n:"Jambi",                      r:"Sumatera"},
+  {no:7,  n:"Bengkulu",                   r:"Sumatera"},
+  {no:8,  n:"Sumatera Selatan",           r:"Sumatera"},
+  {no:9,  n:"Lampung",                    r:"Sumatera"},
+  {no:10, n:"Kep. Bangka Belitung",       r:"Sumatera"},
+  {no:11, n:"Banten",                     r:"Jawa"},
+  {no:12, n:"Jawa Barat",                 r:"Jawa"},
+  {no:13, n:"Jawa Tengah",                r:"Jawa"},
+  {no:14, n:"DI Yogyakarta",              r:"Jawa"},
+  {no:15, n:"Jawa Timur",                 r:"Jawa"},
+  {no:16, n:"Bali",                       r:"Bali & Nusa"},
+  {no:17, n:"NTB",                        r:"Bali & Nusa"},
+  {no:18, n:"NTT",                        r:"Bali & Nusa"},
+  {no:19, n:"Kalimantan Barat",           r:"Kalimantan"},
+  {no:20, n:"Kalimantan Tengah",          r:"Kalimantan"},
+  {no:21, n:"Kalimantan Selatan",         r:"Kalimantan"},
+  {no:22, n:"Kalimantan Timur",           r:"Kalimantan"},
+  {no:23, n:"Kalimantan Utara",           r:"Kalimantan"},
+  {no:24, n:"Sulawesi Selatan",           r:"Sulawesi"},
+  {no:25, n:"Sulawesi Tenggara",          r:"Sulawesi"},
+  {no:26, n:"Sulawesi Barat",             r:"Sulawesi"},
+  {no:27, n:"Sulawesi Tengah",            r:"Sulawesi"},
+  {no:28, n:"Gorontalo",                  r:"Sulawesi"},
+  {no:29, n:"Sulawesi Utara",             r:"Sulawesi"},
+  {no:30, n:"Maluku",                     r:"Maluku"},
+  {no:31, n:"Maluku Utara",               r:"Maluku"},
+  {no:32, n:"Papua Barat",                r:"Papua"},
+  {no:33, n:"Papua",                      r:"Papua"},
+  {no:34, n:"Papua Tengah",               r:"Papua"},
+  {no:35, n:"Papua Pegunungan",           r:"Papua"},
+  {no:36, n:"Papua Selatan",              r:"Papua"},
+  {no:37, n:"DKI Jakarta",                r:"Jawa"},
+  {no:38, n:"Papua Barat Daya",           r:"Papua"}
+];
+
+const mapLegend = document.getElementById('mapLegend');
+mapLegend.innerHTML = petaProvinsi.map(p =>
+  `<button class="leg" type="button" data-no="${p.no}">
+     <span class="lno">${p.no}</span>
+     <span>${p.n}</span>
+     <span class="lreg">${p.r}</span>
+   </button>`
+).join('');
+
+mapLegend.addEventListener('click', (e) => {
+  const btn = e.target.closest('.leg');
+  if (!btn) return;
+  sfx.click();
+  const p = petaProvinsi.find(x => x.no === Number(btn.dataset.no));
+  if (p) showToast(`No. ${p.no} — ${p.n} (${p.r})`);
+});
+
+/* Lightbox */
+const mapFigure  = document.getElementById('mapFigure');
+const mapImg     = document.getElementById('mapImg');
+const mapLightbox= document.getElementById('mapLightbox');
+const lbImg      = document.getElementById('lbImg');
+const lbClose    = document.getElementById('lbClose');
+
+/* Sinkronkan src lightbox dengan gambar peta */
+function syncLightbox() { lbImg.src = mapImg.currentSrc || mapImg.src; }
+mapImg.addEventListener('load', syncLightbox);
+syncLightbox();
+
+function openLightbox() {
+  sfx.click();
+  mapLightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  mapLightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+mapFigure.addEventListener('click', openLightbox);
+mapFigure.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(); }
+});
+lbClose.addEventListener('click', closeLightbox);
+mapLightbox.addEventListener('click', (e) => { if (e.target === mapLightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mapLightbox.classList.contains('open')) closeLightbox();
+});
+
+/* Pesan ramah bila file gambar belum ada */
+mapImg.addEventListener('error', () => {
+  mapFigure.innerHTML =
+    '<div class="map-missing">⚠️ Gambar peta tidak ditemukan.<br>' +
+    'Letakkan file <b>peta-provinsi-indonesia.png</b> di folder yang sama dengan ' +
+    '<b>index.html</b>, atau ubah nilai <b>src</b> pada tag &lt;img id="mapImg"&gt;.</div>';
+});
+
+/* ============================================================
+   13. KUIS INTERAKTIF (15 soal)
+============================================================ */
+const questions = [
+  {q:"Bentuk negara Indonesia menurut Pasal 1 ayat (1) UUD 1945 adalah...",
+   opts:["Negara federal","Negara kesatuan berbentuk republik","Negara serikat","Negara konfederasi"],a:1,
+   exp:"Pasal 1 ayat (1) UUD 1945 menyatakan bahwa Negara Indonesia ialah Negara Kesatuan yang berbentuk Republik."},
+  {q:"Deklarasi yang menyatakan bahwa laut antarpulau Indonesia adalah satu kesatuan wilayah NKRI adalah...",
+   opts:["Deklarasi Bangkok","Deklarasi Djuanda","Deklarasi Juanda 1945","Deklarasi Manila"],a:1,
+   exp:"Deklarasi Djuanda dicetuskan pada 13 Desember 1957 oleh Perdana Menteri Djuanda Kartawidjaja."},
+  {q:"Zona Ekonomi Eksklusif (ZEE) Indonesia memiliki lebar...",
+   opts:["12 mil laut","24 mil laut","100 mil laut","200 mil laut"],a:3,
+   exp:"ZEE adalah zona selebar 200 mil laut dari garis pangkal, di mana Indonesia berhak mengelola sumber daya alamnya."},
+  {q:"Pulau yang menjadi titik paling utara wilayah NKRI adalah...",
+   opts:["Pulau Rote","Pulau Rondo","Pulau Miangas","Pulau Merauke"],a:2,
+   exp:"Pulau Miangas di Sulawesi Utara adalah titik paling utara NKRI."},
+  {q:"Konvensi internasional yang mengakui Indonesia sebagai negara kepulauan adalah...",
+   opts:["Konvensi Chicago 1944","UNCLOS 1982","Konvensi Jenewa 1949","Konvensi Wina 1961"],a:1,
+   exp:"UNCLOS 1982 mengakui prinsip negara kepulauan, diratifikasi Indonesia melalui UU No. 17 Tahun 1985."},
+  {q:"Jumlah provinsi di Indonesia saat ini adalah...",
+   opts:["33 provinsi","34 provinsi","36 provinsi","38 provinsi"],a:3,
+   exp:"Setelah pemekaran wilayah Papua pada 2022, Indonesia memiliki 38 provinsi."},
+  {q:"Wilayah Indonesia yang berada di luar batas geografis namun dianggap wilayah NKRI disebut...",
+   opts:["Wilayah teritorial","Wilayah ekstrateritorial","Wilayah kedaulatan","Wilayah otonom"],a:1,
+   exp:"Wilayah ekstrateritorial contohnya kedutaan besar, kapal, dan pesawat berbendera Indonesia di luar negeri."},
+  {q:"Batas darat wilayah Indonesia di sebelah utara adalah...",
+   opts:["Malaysia dan Papua Nugini","Australia dan Timor Leste","Filipina dan Palau","India dan Singapura"],a:0,
+   exp:"Sebelah utara, Indonesia berbatasan darat dengan Malaysia (Sabah & Sarawak) dan Papua Nugini."},
+  {q:"Sumpah Pemuda yang menjadi tonggak kesadaran wilayah Nusantara terjadi pada...",
+   opts:["20 Mei 1908","28 Oktober 1928","17 Agustus 1945","1 Juni 1945"],a:1,
+   exp:"Sumpah Pemuda diikrarkan pada 28 Oktober 1928 dalam Kongres Pemuda II di Jakarta."},
+  {q:"Cara pandang bangsa Indonesia terhadap diri dan wilayahnya sebagai satu kesatuan disebut...",
+   opts:["Wawasan Nusantara","Ketahanan Nasional","Politik Luar Negeri","Otonomi Daerah"],a:0,
+   exp:"Wawasan Nusantara adalah cara pandang bangsa Indonesia mengenai diri dan lingkungannya sebagai satu kesatuan."},
+  {q:"Alur Laut Kepulauan Indonesia (ALKI) yang melewati Selat Malaka dan Selat Sunda adalah...",
+   opts:["ALKI I","ALKI II","ALKI III","ALKI IV"],a:0,
+   exp:"ALKI I melewati Selat Malaka, Selat Sunda, dan Laut Jawa. ALKI II lewat Selat Lombok–Makassar, ALKI III lewat Sawu–Ombai–Banda."},
+  {q:"Wilayah udara suatu negara diakui hingga ketinggian...",
+   opts:["50 km","80 km","110 km","200 km"],a:2,
+   exp:"Hingga sekitar 110 km di atas permukaan laut. Di atasnya disebut ruang angkasa yang tidak dapat diklaim kedaulatannya."},
+  {q:"Negara yang berbatasan darat dengan Indonesia di Pulau Timor adalah...",
+   opts:["Australia","Papua Nugini","Timor Leste","Malaysia"],a:2,
+   exp:"Timor Leste berbatasan darat dengan Indonesia di Pulau Timor, Nusa Tenggara Timur."},
+  {q:"UU yang meratifikasi UNCLOS 1982 di Indonesia adalah...",
+   opts:["UU No. 17 Tahun 1985","UU No. 5 Tahun 1983","UU No. 6 Tahun 1996","UU No. 1 Tahun 2009"],a:0,
+   exp:"Indonesia meratifikasi UNCLOS melalui UU No. 17 Tahun 1985 tentang Pengesahan UNCLOS 1982."},
+  {q:"Sistem pertahanan Indonesia yang melibatkan seluruh rakyat disebut...",
+   opts:["Sishankamrata","Wawasan Nusantara","Otonomi Daerah","Desentralisasi"],a:0,
+   exp:"Sishankamrata (Sistem Pertahanan Keamanan Rakyat Semesta) melibatkan seluruh rakyat, wilayah, dan sumber daya nasional untuk menjaga kedaulatan NKRI."}
+];
+
+let qIndex = 0, score = 0, answered = false;
+const qCounter = document.getElementById('qCounter');
+const qScore = document.getElementById('qScore');
+const qBar = document.getElementById('qBar');
+const qText = document.getElementById('qText');
+const qOptions = document.getElementById('qOptions');
+const feedback = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+const quizMain = document.getElementById('quizMain');
+const result = document.getElementById('result');
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[qIndex];
+  qCounter.textContent = `PERTANYAAN ${qIndex + 1} / ${questions.length}`;
+  qScore.textContent = `⭐ Skor: ${score}`;
+  qBar.style.width = (qIndex / questions.length) * 100 + '%';
+  qText.textContent = q.q;
+  feedback.classList.remove('show');
+  nextBtn.style.display = 'none';
+  qOptions.innerHTML = '';
+  const keys = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="key">${keys[i]}</span><span>${opt}</span>`;
+    btn.addEventListener('click', () => selectAnswer(i, btn));
+    qOptions.appendChild(btn);
+  });
+}
+
+function selectAnswer(i, btn) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const allOpts = qOptions.querySelectorAll('.opt');
+  allOpts.forEach(o => o.classList.add('locked'));
+  if (i === q.a) {
+    btn.classList.add('correct'); score++;
+    qScore.textContent = `⭐ Skor: ${score}`;
+    feedback.innerHTML = `<strong style="color:var(--green)">✅ Benar!</strong><br>${q.exp}`;
+    sfx.correct();
+    showToast('Jawaban benar! +1 poin');
+  } else {
+    btn.classList.add('wrong'); allOpts[q.a].classList.add('correct');
+    feedback.innerHTML = `<strong style="color:var(--primary)">❌ Kurang tepat.</strong><br>${q.exp}`;
+    sfx.wrong();
+  }
+  feedback.classList.add('show');
+  nextBtn.style.display = 'inline-flex';
+  nextBtn.textContent = qIndex < questions.length - 1 ? 'Lanjut ➜' : 'Lihat Hasil 🏁';
+}
+
+nextBtn.addEventListener('click', () => {
+  sfx.click();
+  if (qIndex < questions.length - 1) { qIndex++; renderQuestion(); }
+  else showResult();
+});
+
+function showResult() {
+  quizMain.style.display = 'none';
+  result.classList.add('show');
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('resScore').textContent = `${score} / ${questions.length}`;
+
+  let emoji = '🏆', title = 'Luar Biasa!', desc = '';
+  if (pct === 100) { emoji='👑'; title='Sempurna!'; desc='Kamu benar-benar menguasai materi wilayah NKRI. Pertahankan semangat belajarmu!'; }
+  else if (pct >= 80) { emoji='🏆'; title='Hebat Sekali!'; desc='Pemahamanmu tentang wilayah NKRI sangat baik. Sedikit lagi menuju sempurna!'; }
+  else if (pct >= 60) { emoji='👍'; title='Bagus!'; desc='Kamu sudah memahami dasar-dasarnya. Baca ulang materi untuk hasil lebih baik.'; }
+  else if (pct >= 40) { emoji='📚'; title='Perlu Belajar Lagi'; desc='Jangan menyerah! Baca kembali materi dari awal, lalu coba kuis sekali lagi.'; }
+  else { emoji='💪'; title='Ayo Semangat!'; desc='Kamu pasti bisa! Pelajari materi dengan teliti, lalu ulangi kuis ini.'; }
+  document.getElementById('resEmoji').textContent = emoji;
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resDesc').textContent = desc;
+
+  // Badges
+  document.querySelectorAll('.badge-item').forEach(b => b.classList.remove('unlocked'));
+  if (pct >= 30) document.querySelector('[data-badge="starter"]').classList.add('unlocked');
+  if (pct >= 60) document.querySelector('[data-badge="silver"]').classList.add('unlocked');
+  if (pct >= 80) document.querySelector('[data-badge="gold"]').classList.add('unlocked');
+  if (pct === 100) document.querySelector('[data-badge="master"]').classList.add('unlocked');
+
+  const best = Number(localStorage.getItem('nkri-best') || 0);
+  if (score > best) {
+    localStorage.setItem('nkri-best', score);
+    showToast(`Rekor baru! Skor terbaik: ${score}/${questions.length}`);
+  }
+  if (pct >= 80) { sfx.success(); setTimeout(confetti, 400); }
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  sfx.click();
+  qIndex = 0; score = 0;
+  result.classList.remove('show');
+  quizMain.style.display = 'block';
+  renderQuestion();
+});
+renderQuestion();
+
+/* ============================================================
+   14. TOAST
+============================================================ */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ============================================================
+   15. SMOOTH SCROLL
+============================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ============================================================
+   16. CONFETTI
+============================================================ */
+function confetti() {
+  const colors = ['#ff4d4d','#ff8a3d','#fbbf24','#34d399','#22d3ee','#a78bfa'];
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('div');
+    p.style.cssText = `position:fixed;top:-10px;left:${Math.random()*100}vw;
+      width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>.5?'50%':'2px'};z-index:9999;pointer-events:none;
+      opacity:${0.7+Math.random()*0.3};transform:rotate(${Math.random()*360}deg);
+      transition:transform ${2+Math.random()*2}s linear,top ${2+Math.random()*2}s linear,opacity 3s;`;
+    document.body.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.top = (100+Math.random()*20)+'vh';
+      p.style.transform = `rotate(${Math.random()*720}deg) translateX(${(Math.random()-.5)*200}px)`;
+      p.style.opacity = '0';
+    });
+    setTimeout(() => p.remove(), 4200);
+  }
+}
+
+/* ============================================================
+   17. FLOATING TOC
+============================================================ */
+const tocFab = document.getElementById('tocFab');
+const tocPanel = document.getElementById('tocPanel');
+tocFab.addEventListener('click', () => {
+  sfx.click();
+  tocPanel.classList.toggle('open');
+});
+document.addEventListener('click', (e) => {
+  if (!tocPanel.contains(e.target) && !tocFab.contains(e.target)) {
+    tocPanel.classList.remove('open');
+  }
+});
+
+onScroll();
+</script>
+</body>
+</html>
